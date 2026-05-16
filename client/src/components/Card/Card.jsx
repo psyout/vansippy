@@ -142,6 +142,15 @@ function Card({
                   variant="circular"
                   width={46}
                   height={46}
+                  sx={{
+                     width: 46,
+                     height: 46,
+                     minWidth: 46,
+                     minHeight: 46,
+                     flex: "0 0 46px",
+                     borderRadius: "50%",
+                     transform: "none",
+                  }}
                />
                <div className="restaurant-card__skeleton-title-group">
                   <Skeleton
@@ -198,6 +207,15 @@ function Card({
                   variant="circular"
                   width={34}
                   height={34}
+                  sx={{
+                     width: 34,
+                     height: 34,
+                     minWidth: 34,
+                     minHeight: 34,
+                     flex: "0 0 34px",
+                     borderRadius: "50%",
+                     transform: "none",
+                  }}
                />
                <div className="restaurant-card__skeleton-menu-actions">
                   <Skeleton
@@ -211,12 +229,30 @@ function Card({
                      variant="circular"
                      width={34}
                      height={34}
+                     sx={{
+                        width: 34,
+                        height: 34,
+                        minWidth: 34,
+                        minHeight: 34,
+                        flex: "0 0 34px",
+                        borderRadius: "50%",
+                        transform: "none",
+                     }}
                   />
                   <Skeleton
                      animation="wave"
                      variant="circular"
                      width={34}
                      height={34}
+                     sx={{
+                        width: 34,
+                        height: 34,
+                        minWidth: 34,
+                        minHeight: 34,
+                        flex: "0 0 34px",
+                        borderRadius: "50%",
+                        transform: "none",
+                     }}
                   />
                </div>
             </CardActions>

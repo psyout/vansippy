@@ -4,27 +4,34 @@ import { Link } from "react-router-dom";
 const isGroupedMenuItem = (value) =>
    value && typeof value === "object" && !Array.isArray(value);
 
-const renderMenuValue = (value) => {
+const renderMenuPrice = (value) => {
    if (isGroupedMenuItem(value)) {
-      return (
-         <>
-            {Array.isArray(value.items) && value.items.length > 0 && (
-               <ul className="restaurant-card__menu--sublist">
-                  {value.items.map((item) => (
-                     <li key={item}>{item}</li>
-                  ))}
-               </ul>
-            )}
-            {value.price && (
-               <span className="restaurant-card__menu--item-price">
-                  : {value.price}
-               </span>
-            )}
-         </>
-      );
+      return value.price ? (
+         <span className="restaurant-card__menu--item-price">
+            : {value.price}
+         </span>
+      ) : null;
    }
 
    return <span className="restaurant-card__menu--item-price">: {value}</span>;
+};
+
+const renderMenuItems = (value) => {
+   if (
+      !isGroupedMenuItem(value) ||
+      !Array.isArray(value.items) ||
+      value.items.length === 0
+   ) {
+      return null;
+   }
+
+   return (
+      <ul className="restaurant-card__menu--sublist">
+         {value.items.map((item) => (
+            <li key={item}>{item}</li>
+         ))}
+      </ul>
+   );
 };
 
 function DrinksMenu({ drinks, website }) {
@@ -40,7 +47,8 @@ function DrinksMenu({ drinks, website }) {
                         <strong className="restaurant-card__menu--item-name">
                            {name}
                         </strong>
-                        {renderMenuValue(value)}
+                        {renderMenuPrice(value)}
+                        {renderMenuItems(value)}
                      </span>
                   </li>
                ))}
