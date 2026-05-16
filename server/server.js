@@ -28,7 +28,7 @@ const authLimiter = rateLimit({
    legacyHeaders: false,
    message: {
       success: false,
-      message: "Too many login attempts. Please try again later.",
+      message: "Sorry, too many login attempts. Please try again later.",
    },
 });
 
