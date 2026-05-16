@@ -32,15 +32,22 @@ const authLimiter = rateLimit({
    },
 });
 
-app.use("/api", apiLimiter);
-
 // Define the port using an environment variable or default to 8080
 const PORT = process.env.PORT || 8080;
 
-const corsOrigins = (process.env.CORS_ORIGIN || "http://localhost:3000")
-   .split(",")
-   .map((origin) => origin.trim())
-   .filter(Boolean);
+const defaultCorsOrigins = [
+   "http://localhost:3000",
+   "https://vansippy.com",
+   "https://www.vansippy.com",
+];
+
+const corsOrigins = [
+   ...defaultCorsOrigins,
+   ...(process.env.CORS_ORIGIN || "")
+      .split(",")
+      .map((origin) => origin.trim())
+      .filter(Boolean),
+];
 
 app.use(
    cors({
@@ -50,8 +57,11 @@ app.use(
          return callback(new Error(`CORS blocked for origin: ${origin}`));
       },
       credentials: true,
+      optionsSuccessStatus: 204,
    }),
 );
+
+app.use("/api", apiLimiter);
 
 app.use(cookieParser());
 
