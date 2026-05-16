@@ -2,8 +2,15 @@
 @use './styles/partials/mixins' as *;
 @use './styles/partials/fonts' as *;
 
+:root {
+	--font-primary: #{$font-primary};
+	--font-heading: #{$font-heading};
+	--font-card: #{$font-card};
+	--font-accent: #{$font-accent};
+}
+
 html {
-	font-family: 'Rubik', sans-serif;
+	font-family: var(--font-primary);
 	box-sizing: border-box;
 }
 

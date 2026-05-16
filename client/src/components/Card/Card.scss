@@ -79,9 +79,14 @@
 		gap: 0.5rem;
 	}
 
+	&__quick-actions,
 	&__menu-actions {
 		display: flex;
 		align-items: center;
+	}
+
+	&__quick-actions {
+		gap: 0.1rem;
 	}
 
 	&__content {

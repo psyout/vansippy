@@ -18,7 +18,7 @@
 	}
 
 	&__title {
-		font-family: Rubik;
+		font-family: var(--font-primary);
 		font-weight: 300;
 		font-size: 0.85rem;
 		color: #202020;
@@ -30,7 +30,7 @@
 	}
 
 	&__label {
-		font-family: Rubik;
+		font-family: var(--font-primary);
 		font-weight: 300;
 		font-size: 0.85rem;
 		color: #202020;
@@ -48,7 +48,7 @@
 
 	&__select {
 		color: #2b2840;
-		font-family: Rubik;
+		font-family: var(--font-primary);
 		font-weight: 500;
 		padding: 0.25rem 0.45rem;
 		border-radius: 0.3rem;

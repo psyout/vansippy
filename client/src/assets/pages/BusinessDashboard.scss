@@ -20,7 +20,7 @@
 	.header-content {
 		h1 {
 			color: #2b2840;
-			font-family: 'Rubik', sans-serif;
+			font-family: var(--font-primary);
 			margin: 0 0 0.5rem 0;
 			font-size: 2rem;
 		}
@@ -63,7 +63,7 @@
 
 	h3 {
 		color: #2b2840;
-		font-family: 'Rubik', sans-serif;
+		font-family: var(--font-primary);
 		margin: 0 0 1rem 0;
 		font-size: 1.2rem;
 		border-bottom: 1px solid #e0e0e0;
@@ -159,7 +159,7 @@
 
 	h3 {
 		color: #2b2840;
-		font-family: 'Rubik', sans-serif;
+		font-family: var(--font-primary);
 		margin: 0 0 1rem 0;
 		font-size: 1.2rem;
 		border-bottom: 1px solid #e0e0e0;
@@ -192,7 +192,7 @@
 		font-size: 2rem;
 		font-weight: 700;
 		color: #2b2840;
-		font-family: 'Rubik', sans-serif;
+		font-family: var(--font-primary);
 	}
 
 	.stat-label {
@@ -209,7 +209,7 @@
 	border: none;
 	border-radius: 4px;
 	cursor: pointer;
-	font-family: 'Rubik', sans-serif;
+	font-family: var(--font-primary);
 	font-weight: 500;
 	transition: all 0.3s ease;
 	text-decoration: none;
@@ -256,7 +256,7 @@
 
 	h2 {
 		color: #2b2840;
-		font-family: 'Rubik', sans-serif;
+		font-family: var(--font-primary);
 		margin-bottom: 1rem;
 	}
 }

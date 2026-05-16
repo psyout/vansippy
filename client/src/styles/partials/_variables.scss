@@ -4,6 +4,12 @@ $tablet-breakpoint: 768px;
 $desktop-breakpoint: 1280px;
 $large-desktop-breakpoint: 1440px;
 
+//Fonts
+$font-primary: 'Outfit', sans-serif;
+$font-heading: 'Rubik', sans-serif;
+$font-card: $font-heading;
+$font-accent: 'Merriweather', serif;
+
 //Font Size
 $fs-075: 0.75rem;
 $fs-080: 0.8rem;

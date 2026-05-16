@@ -1,6 +1,3 @@
-import { FiChevronsRight } from "react-icons/fi";
-import { Link } from "react-router-dom";
-
 const isGroupedMenuItem = (value) =>
    value && typeof value === "object" && !Array.isArray(value);
 
@@ -53,18 +50,6 @@ function DrinksMenu({ drinks, website }) {
                   </li>
                ))}
             </ul>
-            {website && (
-               <Link
-                  to={website}
-                  target="blank"
-                  className="restaurant-card__menu--item-website"
-               >
-                  See full menu here
-                  <span>
-                     <FiChevronsRight />
-                  </span>
-               </Link>
-            )}
          </div>
       </>
    );

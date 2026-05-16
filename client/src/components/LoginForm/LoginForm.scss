@@ -17,7 +17,7 @@
 
 	h1 {
 		color: #2b2840;
-		font-family: 'Rubik', sans-serif;
+		font-family: var(--font-primary);
 		margin: 0 0 0.5rem 0;
 		font-size: 1.8rem;
 	}
@@ -47,7 +47,7 @@
 		display: block;
 		font-weight: 600;
 		color: #2b2840;
-		font-family: 'Rubik', sans-serif;
+		font-family: var(--font-primary);
 		margin-bottom: 0.5rem;
 		font-size: 0.9rem;
 	}
@@ -58,7 +58,7 @@
 		border: 1px solid #ddd;
 		border-radius: 4px;
 		font-size: 1rem;
-		font-family: 'Rubik', sans-serif;
+		font-family: var(--font-primary);
 		transition: border-color 0.3s ease;
 
 		&:focus {
@@ -79,7 +79,7 @@
 	border: none;
 	border-radius: 4px;
 	padding: 0.75rem;
-	font-family: 'Rubik', sans-serif;
+	font-family: var(--font-primary);
 	font-weight: 600;
 	font-size: 1rem;
 	cursor: pointer;

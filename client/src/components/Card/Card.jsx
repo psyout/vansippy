@@ -13,15 +13,19 @@ import {
    Skeleton,
    Divider,
 } from "@mui/material";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { red, grey } from "@mui/material/colors";
-import LunchDiningTwoToneIcon from "@mui/icons-material/LunchDiningTwoTone";
-import SportsBarTwoToneIcon from "@mui/icons-material/SportsBarTwoTone";
-import PhoneInTalkTwoToneIcon from "@mui/icons-material/PhoneInTalkTwoTone";
+import { FiGlobe, FiPhone } from "react-icons/fi";
+import { IoBeerOutline } from "react-icons/io5";
+import { TbBurger } from "react-icons/tb";
 import OpenTime from "./OpenTime";
 import DrinksMenu from "./DrinksMenu";
 import FoodMenu from "./FoodMenu";
 import PlaceHolder from "../../assets/images/placeholder.jpg";
+
+const CARD_FONTS = {
+   body: "var(--font-card)",
+   heading: "var(--font-heading)",
+};
 
 function Card({
    title,
@@ -89,7 +93,7 @@ function Card({
                bgcolor: red[400],
                fontWeight: "700",
                fontSize: "1.2rem",
-               fontFamily: "Rubik",
+               fontFamily: CARD_FONTS.heading,
                width: "35px",
                height: "35px",
             }}
@@ -113,8 +117,20 @@ function Card({
       }
    };
 
+   // Open full menu / website
+   const openWebsite = () => {
+      if (website) {
+         const websiteUrl = website.startsWith("http")
+            ? website
+            : `https://${website}`;
+         window.open(websiteUrl, "_blank", "noopener,noreferrer");
+      } else {
+         console.error("Website is not available");
+      }
+   };
+
    const stylesMap = {
-      fontFamily: "Rubik",
+      fontFamily: CARD_FONTS.body,
       fontSize: "0.8rem",
       fontWeight: "300",
       cursor: "pointer",
@@ -122,16 +138,24 @@ function Card({
       "&:hover": { color: "#ef5350" },
    };
 
-   const stylesMenuText = {
-      fontFamily: "Rubik",
-      fontSize: "0.9rem",
-      fontWeight: "500",
-      color: grey[600],
+   const iconSize = {
+      fontSize: "1.35rem",
+      strokeWidth: 1.75,
    };
 
-   const iconSize = {
-      fontSize: "1.9rem",
+   const actionIconButtonSx = {
+      padding: "0.35rem",
    };
+
+   const getMenuIconButtonSx = (isExpanded) => ({
+      ...actionIconButtonSx,
+      color: getIconColor(isExpanded),
+      backgroundColor: isExpanded ? red[50] : "transparent",
+      transition: "background-color 0.2s ease, color 0.2s ease",
+      "&:hover": {
+         backgroundColor: isExpanded ? red[50] : grey[100],
+      },
+   });
 
    if (showSkeleton) {
       return (
@@ -271,7 +295,7 @@ function Card({
             title={
                <Typography
                   sx={{
-                     fontFamily: "Rubik",
+                     fontFamily: CARD_FONTS.heading,
                      fontSize: "0.9rem",
                      fontWeight: "400",
                   }}
@@ -324,7 +348,7 @@ function Card({
                variant="body2"
                color="text.secondary"
                component="div"
-               sx={{ fontFamily: "Rubik", fontSize: "0.8rem" }}
+               sx={{ fontFamily: CARD_FONTS.body, fontSize: "0.8rem" }}
             >
                {time ? <OpenTime time={time} /> : "No opening time available"}
             </Typography>
@@ -340,28 +364,8 @@ function Card({
                backgroundColor: "#ffffff",
             }}
          >
-            {/* Call Button */}
-            <IconButton
-               onClick={(event) => {
-                  event.stopPropagation();
-                  if (contact_number) {
-                     window.location.href = `tel:${contact_number}`;
-                  } else {
-                     console.error("Contact number is not available");
-                  }
-               }}
-               sx={{ color: grey[600] }}
-               aria-label="call business"
-            >
-               <PhoneInTalkTwoToneIcon style={iconSize} />
-            </IconButton>
-
             {/* Menu Buttons */}
             <div className="restaurant-card__menu-actions">
-               <Typography variant="body2" sx={{ ...stylesMenuText }}>
-                  Menu
-               </Typography>
-               <NavigateNextIcon sx={{ color: grey[600], fontSize: "rem" }} />
                <IconButton
                   onClick={(event) => {
                      event.stopPropagation();
@@ -369,9 +373,9 @@ function Card({
                   }}
                   aria-expanded={expanded.drinks}
                   aria-label="show drinks"
-                  sx={{ color: getIconColor(expanded.drinks) }}
+                  sx={getMenuIconButtonSx(expanded.drinks)}
                >
-                  <SportsBarTwoToneIcon style={iconSize} />
+                  <IoBeerOutline style={iconSize} />
                </IconButton>
                <IconButton
                   onClick={(event) => {
@@ -380,10 +384,42 @@ function Card({
                   }}
                   aria-expanded={expanded.food}
                   aria-label="show food"
-                  sx={{ color: getIconColor(expanded.food) }}
+                  sx={getMenuIconButtonSx(expanded.food)}
                >
-                  <LunchDiningTwoToneIcon style={iconSize} />
+                  <TbBurger style={iconSize} />
                </IconButton>
+            </div>
+
+            <div className="restaurant-card__quick-actions">
+               {/* Call Button */}
+               <IconButton
+                  onClick={(event) => {
+                     event.stopPropagation();
+                     if (contact_number) {
+                        window.location.href = `tel:${contact_number}`;
+                     } else {
+                        console.error("Contact number is not available");
+                     }
+                  }}
+                  sx={{ ...actionIconButtonSx, color: grey[400] }}
+                  aria-label="call business"
+               >
+                  <FiPhone style={iconSize} />
+               </IconButton>
+
+               {/* Full Menu / Website Button */}
+               {website && (
+                  <IconButton
+                     onClick={(event) => {
+                        event.stopPropagation();
+                        openWebsite();
+                     }}
+                     sx={{ ...actionIconButtonSx, color: grey[400] }}
+                     aria-label="open full menu"
+                  >
+                     <FiGlobe style={iconSize} />
+                  </IconButton>
+               )}
             </div>
          </CardActions>
          {/* Collapsible Menus */}
