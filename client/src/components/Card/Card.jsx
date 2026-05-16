@@ -15,10 +15,10 @@ import {
 } from "@mui/material";
 import { red, grey } from "@mui/material/colors";
 import { FiGlobe, FiPhone } from "react-icons/fi";
-import { IoBeerOutline } from "react-icons/io5";
-import { TbBurger } from "react-icons/tb";
+import { TbBeer, TbBurger } from "react-icons/tb";
 import OpenTime from "./OpenTime";
 import DrinksMenu from "./DrinksMenu";
+import isBusinessOpen from "../../utils/isBusinessOpen";
 import FoodMenu from "./FoodMenu";
 import PlaceHolder from "../../assets/images/placeholder.jpg";
 
@@ -31,6 +31,7 @@ function Card({
    title,
    address,
    time,
+   hours,
    contact_number,
    drinks,
    food,
@@ -49,6 +50,7 @@ function Card({
    });
    const [cardImage, setCardImage] = useState(image || PlaceHolder);
    const [imgLoaded, setImgLoaded] = useState(false);
+   const isOpen = useMemo(() => isBusinessOpen(hours), [hours]);
 
    useEffect(() => {
       setCardImage(image || PlaceHolder);
@@ -350,7 +352,11 @@ function Card({
                component="div"
                sx={{ fontFamily: CARD_FONTS.body, fontSize: "0.8rem" }}
             >
-               {time ? <OpenTime time={time} /> : "No opening time available"}
+               {time ? (
+                  <OpenTime time={time} isOpen={isOpen} />
+               ) : (
+                  "No opening time available"
+               )}
             </Typography>
          </CardContent>
          <Divider />
@@ -375,7 +381,7 @@ function Card({
                   aria-label="show drinks"
                   sx={getMenuIconButtonSx(expanded.drinks)}
                >
-                  <IoBeerOutline style={iconSize} />
+                  <TbBeer style={iconSize} />
                </IconButton>
                <IconButton
                   onClick={(event) => {

@@ -198,13 +198,14 @@
 		display: flex;
 		align-items: flex-start;
 		flex-direction: column;
+		font-family: var(--font-primary);
 
 		&--icon {
 			margin-left: 0.1rem;
 		}
 
 		&--item-name {
-			font-weight: 600;
+			font-weight: 500;
 		}
 
 		&--item-price {
@@ -480,14 +481,13 @@
 		&--container {
 			display: flex;
 			align-items: center;
+			flex-wrap: wrap;
 			gap: 0.2rem;
-			margin-bottom: 0.5rem;
+			margin-top: 0.5rem;
+		}
 
-			span {
-				font-size: 0.85rem;
-				display: flex;
-				letter-spacing: 0.015rem;
-			}
+		&--hours {
+			display: block;
 		}
 
 		&--title {
@@ -501,6 +501,44 @@
 			font-size: 0.85rem;
 			line-height: 1.4;
 		}
+	}
+
+	&__status {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.25rem;
+		padding: 0.2rem 0.45rem;
+		border-radius: 999px;
+		font-size: 0.7rem;
+		font-weight: 500;
+		line-height: 1;
+
+		&--open {
+			background-color: rgba(46, 125, 50, 0.1);
+			color: #2e7d32;
+		}
+
+		&--closed {
+			background-color: rgba(117, 117, 117, 0.12);
+			color: #757575;
+		}
+	}
+
+	&__status-icon {
+		flex: 0 0 auto;
+	}
+
+	&__status-dot {
+		width: 0.45rem;
+		height: 0.45rem;
+		border-radius: 50%;
+		background-color: currentColor;
+		box-shadow: 0 0 0 0.12rem rgba(255, 255, 255, 0.9);
+	}
+
+	&__status-label {
+		font-size: 0.7rem;
+		letter-spacing: 0.01rem;
 	}
 }
 

@@ -141,6 +141,7 @@ function Aside({
                neighbourhoods={properties.neighbourhoods}
                contact_number={properties.contact_number}
                time={formatHours(properties.hours)}
+               hours={properties.hours}
                drinks={properties.drinks}
                food={properties.food}
                website={properties.website}
