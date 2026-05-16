@@ -1,41 +1,65 @@
-import { Link } from 'react-router-dom';
-import { FiChevronsRight } from 'react-icons/fi';
+import { Link } from "react-router-dom";
+import { FiChevronsRight } from "react-icons/fi";
+
+const isGroupedMenuItem = (value) =>
+   value && typeof value === "object" && !Array.isArray(value);
+
+const renderMenuValue = (value) => {
+   if (isGroupedMenuItem(value)) {
+      return (
+         <>
+            {Array.isArray(value.items) && value.items.length > 0 && (
+               <ul className="restaurant-card__menu--sublist">
+                  {value.items.map((item) => (
+                     <li key={item}>{item}</li>
+                  ))}
+               </ul>
+            )}
+            {value.price && (
+               <span className="restaurant-card__menu--item-price">
+                  : {value.price}
+               </span>
+            )}
+         </>
+      );
+   }
+
+   return <span className="restaurant-card__menu--item-price">: {value}</span>;
+};
 
 function FoodMenu({ food, website }) {
-	// Convert food object to array format
-	const foodArray = food
-		? Object.entries(food).map(([name, price]) => (
-				<span>
-					<strong className='restaurant-card__menu--item-name'>{name}</strong>
-					<span className='restaurant-card__menu--item-price'>: {price}</span>
-				</span>
-			))
-		: [];
+   const foodArray = food ? Object.entries(food) : [];
 
-	return (
-		<>
-			<div className='restaurant-card__menu'>
-				<ul className='restaurant-card__menu--list-food'>
-					{foodArray.map((foodItem, index) => (
-						<li
-							className={'restaurant-card__menu--item-food'}
-							key={index}>
-							{foodItem}
-						</li>
-					))}
-				</ul>
-				<Link
-					to={website}
-					target='blank'
-					className='restaurant-card__menu--item-website'>
-					See full menu here
-					<span>
-						<FiChevronsRight />
-					</span>
-				</Link>
-			</div>
-		</>
-	);
+   return (
+      <>
+         <div className="restaurant-card__menu">
+            <ul className="restaurant-card__menu--list-food">
+               {foodArray.map(([name, value]) => (
+                  <li className="restaurant-card__menu--item-food" key={name}>
+                     <span>
+                        <strong className="restaurant-card__menu--item-name">
+                           {name}
+                        </strong>
+                        {renderMenuValue(value)}
+                     </span>
+                  </li>
+               ))}
+            </ul>
+            {website && (
+               <Link
+                  to={website}
+                  target="blank"
+                  className="restaurant-card__menu--item-website"
+               >
+                  See full menu here
+                  <span>
+                     <FiChevronsRight />
+                  </span>
+               </Link>
+            )}
+         </div>
+      </>
+   );
 }
 
 export default FoodMenu;

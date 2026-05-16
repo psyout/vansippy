@@ -25,15 +25,48 @@ const isPlainObject = (value) =>
    !Array.isArray(value) &&
    !(value instanceof Map);
 
-const mapFromEntries = (value, entryToPair) => {
+const normalizeMenuValue = (value) => {
+   if (value === undefined || value === null) return value;
+
+   if (Array.isArray(value)) {
+      return value.map((item) => String(item).trim()).filter(Boolean);
+   }
+
+   if (isPlainObject(value)) {
+      const normalized = { ...value };
+
+      if (Array.isArray(value.items)) {
+         normalized.items = value.items
+            .map((item) => String(item).trim())
+            .filter(Boolean);
+      }
+
+      if (value.price !== undefined && value.price !== null) {
+         normalized.price = String(value.price).trim();
+      }
+
+      return normalized;
+   }
+
+   return String(value).trim();
+};
+
+const mapFromEntries = (
+   value,
+   entryToPair,
+   { stringifyValues = false } = {},
+) => {
    const mapped = new Map();
 
    if (!value) return mapped;
 
+   const normalizeValue = (mapValue) =>
+      stringifyValues ? String(mapValue).trim() : normalizeMenuValue(mapValue);
+
    if (value instanceof Map) {
       value.forEach((mapValue, key) => {
          if (key && mapValue !== undefined && mapValue !== null)
-            mapped.set(String(key).trim(), String(mapValue).trim());
+            mapped.set(String(key).trim(), normalizeValue(mapValue));
       });
       return mapped;
    }
@@ -49,7 +82,7 @@ const mapFromEntries = (value, entryToPair) => {
    if (isPlainObject(value)) {
       Object.entries(value).forEach(([key, mapValue]) => {
          if (key && mapValue !== undefined && mapValue !== null)
-            mapped.set(String(key).trim(), String(mapValue).trim());
+            mapped.set(String(key).trim(), normalizeValue(mapValue));
       });
    }
 
@@ -57,19 +90,23 @@ const mapFromEntries = (value, entryToPair) => {
 };
 
 const normalizeHours = (hours) =>
-   mapFromEntries(hours, (hour) => {
-      if (!hour?.days || !hour?.from || !hour?.to) return null;
-      return [
-         String(hour.days).trim(),
-         `${String(hour.from).trim()} - ${String(hour.to).trim()}`,
-      ];
-   });
+   mapFromEntries(
+      hours,
+      (hour) => {
+         if (!hour?.days || !hour?.from || !hour?.to) return null;
+         return [
+            String(hour.days).trim(),
+            `${String(hour.from).trim()} - ${String(hour.to).trim()}`,
+         ];
+      },
+      { stringifyValues: true },
+   );
 
 const normalizeMenu = (items) =>
    mapFromEntries(items, (item) => {
       if (!item?.name || item.price === undefined || item.price === null)
          return null;
-      return [String(item.name).trim(), String(item.price).trim()];
+      return [String(item.name).trim(), normalizeMenuValue(item.price)];
    });
 
 const validateCoordinates = (coordinates) => {
@@ -213,13 +250,11 @@ export const updateLocation = async (req, res) => {
    const validationErrors = validateLocationPayload(updates, { partial: true });
 
    if (validationErrors.length) {
-      return res
-         .status(400)
-         .json({
-            success: false,
-            message: "Validation error",
-            errors: validationErrors,
-         });
+      return res.status(400).json({
+         success: false,
+         message: "Validation error",
+         errors: validationErrors,
+      });
    }
 
    try {
@@ -246,13 +281,11 @@ export const updateLocation = async (req, res) => {
          const validationErrorsFromMongoose = Object.values(error.errors).map(
             (err) => err.message,
          );
-         return res
-            .status(400)
-            .json({
-               success: false,
-               message: "Validation error",
-               errors: validationErrorsFromMongoose,
-            });
+         return res.status(400).json({
+            success: false,
+            message: "Validation error",
+            errors: validationErrorsFromMongoose,
+         });
       }
 
       res.status(500).json({ success: false, message: "Server error" });
