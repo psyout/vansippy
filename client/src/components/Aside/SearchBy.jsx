@@ -1,0 +1,43 @@
+export const options = [
+	{ value: 'name', label: 'Name' },
+	{ value: 'hours', label: 'Time' },
+];
+
+export const filters = [
+	{ value: '', label: 'Categories' },
+	{ value: 'Seafood', label: 'Seafood' },
+	{ value: 'Bars', label: 'Bars' },
+	{ value: 'Canadian', label: 'Canadian' },
+	{ value: 'Karaoke', label: 'Karaoke' },
+	{ value: 'Deli', label: 'Deli' },
+	{ value: 'Cideries', label: 'Cideries' },
+	{ value: 'Restaurant', label: 'Restaurant' },
+	{ value: 'Cocktail', label: 'Cocktail' },
+	{ value: 'Mexican', label: 'Mexican' },
+	{ value: 'Lounges', label: 'Lounges' },
+	{ value: 'Spanish', label: 'Spanish' },
+	{ value: 'Australian', label: 'Australian' },
+	{ value: 'Pub', label: 'Pub' },
+	{ value: 'Gastropub', label: 'Gastropub' },
+	{ value: 'Persian', label: 'Persian' },
+	{ value: 'Dive Bars', label: 'Dive Bars' },
+	{ value: 'Italian', label: 'Italian' },
+];
+
+export const hoodFilter = [
+	{ value: '', label: 'Neighbourhood' },
+	{ value: 'Kitsilano', label: 'Kitsilano' },
+	{ value: 'Downtown', label: 'Downtown' },
+	{ value: 'West End', label: 'West End' },
+	{ value: 'Mount Pleasant', label: 'Mount Pleasant' },
+	{ value: 'East Vancouver', label: 'East Vancouver' },
+	{ value: 'South Vancouver', label: 'South Vancouver' },
+	{ value: 'North Vancouver', label: 'North Vancouver' },
+	{ value: 'West Vancouver', label: 'West Vancouver' },
+	{ value: 'South Granville', label: 'South Granville' },
+	{ value: 'Point Grey', label: 'Point Grey' },
+	{ value: 'Fair View', label: 'Fair View' },
+	{ value: 'Dunbar', label: 'Dunbar' },
+	{ value: 'Kerrisdale', label: 'Kerrisdale' },
+	{ value: 'West Point Grey', label: 'West Point Grey' },
+];

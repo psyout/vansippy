@@ -1,0 +1,138 @@
+@use '../../styles/partials/variables' as *;
+@use '../../styles/partials/mixins' as *;
+@use '../../styles/partials/fonts' as *;
+
+.business-login-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	padding: 2rem;
+	background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.business-login-form {
+	background: white;
+	border-radius: 8px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	padding: 2rem;
+	width: 100%;
+	max-width: 400px;
+}
+
+.login-header {
+	text-align: center;
+	margin-bottom: 2rem;
+
+	h1 {
+		color: #2b2840;
+		font-family: 'Rubik', sans-serif;
+		margin: 0 0 0.5rem 0;
+		font-size: 1.8rem;
+	}
+
+	p {
+		color: #666;
+		margin: 0;
+		font-size: 0.9rem;
+	}
+}
+
+.form-group {
+	margin-bottom: 1.5rem;
+
+	label {
+		display: block;
+		font-weight: 600;
+		color: #2b2840;
+		font-family: 'Rubik', sans-serif;
+		margin-bottom: 0.5rem;
+		font-size: 0.9rem;
+	}
+
+	input {
+		width: 100%;
+		padding: 0.75rem;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+		font-size: 1rem;
+		font-family: 'Rubik', sans-serif;
+		transition: border-color 0.3s ease;
+
+		&:focus {
+			outline: none;
+			border-color: #2b2840;
+		}
+
+		&:hover {
+			border-color: #bbb;
+		}
+	}
+
+	small {
+		display: block;
+		color: #666;
+		font-size: 0.8rem;
+		margin-top: 0.25rem;
+	}
+}
+
+.submit-button {
+	width: 100%;
+	background-color: #2b2840;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	padding: 0.75rem;
+	font-family: 'Rubik', sans-serif;
+	font-weight: 600;
+	font-size: 1rem;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	margin-bottom: 1.5rem;
+
+	&:hover:not(:disabled) {
+		background-color: #1a1628;
+	}
+
+	&:disabled {
+		background-color: #ccc;
+		cursor: not-allowed;
+	}
+}
+
+.login-footer {
+	text-align: center;
+	border-top: 1px solid #e0e0e0;
+	padding-top: 1.5rem;
+
+	p {
+		color: #666;
+		margin: 0 0 0.5rem 0;
+		font-size: 0.9rem;
+	}
+
+	.link-button {
+		background: none;
+		border: none;
+		color: #667eea;
+		font-family: 'Rubik', sans-serif;
+		font-size: 0.9rem;
+		cursor: pointer;
+		text-decoration: underline;
+
+		&:hover {
+			color: #5a6fd8;
+		}
+	}
+}
+
+@media (max-width: 480px) {
+	.business-login-container {
+		padding: 1rem;
+	}
+
+	.business-login-form {
+		padding: 1.5rem;
+	}
+}

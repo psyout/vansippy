@@ -1,0 +1,83 @@
+@use '../../styles//partials/variables' as *;
+@use '../../styles/partials/mixins' as *;
+@use '../../styles/partials/fonts' as *;
+
+.options-dropdown {
+	align-items: flex-start;
+	display: flex;
+	margin: 0rem 0 0.5rem;
+	justify-content: flex-start;
+	border-radius: 0.4rem;
+	padding: 0.5rem 0.6rem;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 0.8rem;
+
+	@include tablet {
+		margin: 0 0 -0.5rem;
+	}
+
+	&__title {
+		font-family: Rubik;
+		font-weight: 300;
+		font-size: 0.85rem;
+		color: #202020;
+		display: block;
+
+		@include tablet {
+			display: none;
+		}
+	}
+
+	&__label {
+		font-family: Rubik;
+		font-weight: 300;
+		font-size: 0.85rem;
+		color: #202020;
+		display: none;
+
+		@include tablet {
+			display: block;
+		}
+
+		&--label {
+			color: $color-logo;
+			font-size: 0.85rem;
+		}
+	}
+
+	&__select {
+		color: #2b2840;
+		font-family: Rubik;
+		font-weight: 500;
+		padding: 0.25rem 0.45rem;
+		border-radius: 0.3rem;
+		font-size: 0.75rem;
+		background-color: #fff;
+		appearance: none;
+		text-align: center;
+		text-align: -webkit-center;
+		justify-content: center;
+		border: 0;
+		box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.15);
+		transition: all 0.3s;
+
+		&:hover,
+		&:focus {
+			background-color: $color-card-header;
+			color: #fff;
+			cursor: pointer;
+			border: 0;
+		}
+	}
+}
+
+.filter-dropdown {
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+
+	input {
+		margin-right: 0.3rem;
+	}
+}

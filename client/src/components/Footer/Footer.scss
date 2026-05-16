@@ -1,0 +1,17 @@
+.footer {
+	text-align: center;
+	padding: 1rem;
+	margin-top: auto;
+}
+
+.footer__link {
+	text-decoration: none;
+	font-weight: bold;
+	cursor: pointer;
+	display: inline;
+	color: #212121;
+}
+
+.footer__link:hover {
+	text-decoration: underline;
+}

@@ -1,0 +1,62 @@
+# Dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+.pnp
+.pnp.js
+
+# Production builds
+build/
+client/build/
+server/build/
+dist/
+
+# Test coverage
+coverage/
+client/coverage/
+server/coverage/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+client/.env
+client/.env.*
+!client/.env.example
+server/.env
+server/.env.*
+!server/.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.nova/
+*.sublime-workspace
+*.sublime-project
+
+# Temporary files
+tmp/
+temp/
+
+# Server runtime artifacts
+pids/
+*.pid
+*.seed
+dump/
+uploads/
+
+# Local backup of the old nested client git repo
+.git-backup-before-monorepo/
+client/.git-backup-before-monorepo/
+
+# Misc
+.htaccess

@@ -1,0 +1,41 @@
+# Node.js dependencies
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.* # e.g., .env.development, .env.production
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE settings
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Coverage & build
+coverage/
+dist/
+build/
+tmp/
+temp/
+
+# MongoDB dumps
+dump/
+
+# PM2 logs
+pids/
+*.pid
+*.seed
+
+# Optional: ignore uploads/temp files if any
+uploads/
