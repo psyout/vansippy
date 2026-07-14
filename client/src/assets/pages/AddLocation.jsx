@@ -307,6 +307,7 @@ function AddLocation({ editMode = false, mode = 'add', existingBusiness = null, 
 							<option value='Restaurant'>Restaurant</option>
 							<option value='Bar'>Bar</option>
 							<option value='Pub'>Pub</option>
+							<option value='Bakery'>Bakery</option>
 						</select>
 					</div>
 					<div className='form-group'>

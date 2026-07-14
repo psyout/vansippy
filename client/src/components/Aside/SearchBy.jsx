@@ -22,6 +22,8 @@ export const filters = [
 	{ value: 'Persian', label: 'Persian' },
 	{ value: 'Dive Bars', label: 'Dive Bars' },
 	{ value: 'Italian', label: 'Italian' },
+	{ value: 'Wine Bar', label: 'Wine Bar' },
+	{ value: 'Bakery', label: 'Bakery' },
 ];
 
 export const hoodFilter = [
@@ -31,7 +33,6 @@ export const hoodFilter = [
 	{ value: 'West End', label: 'West End' },
 	{ value: 'Mount Pleasant', label: 'Mount Pleasant' },
 	{ value: 'East Vancouver', label: 'East Vancouver' },
-	{ value: 'South Vancouver', label: 'South Vancouver' },
 	{ value: 'North Vancouver', label: 'North Vancouver' },
 	{ value: 'West Vancouver', label: 'West Vancouver' },
 	{ value: 'South Granville', label: 'South Granville' },
@@ -40,4 +41,5 @@ export const hoodFilter = [
 	{ value: 'Dunbar', label: 'Dunbar' },
 	{ value: 'Kerrisdale', label: 'Kerrisdale' },
 	{ value: 'West Point Grey', label: 'West Point Grey' },
+	{ value: 'Commercial Drive', label: 'Commercial Drive' },
 ];
