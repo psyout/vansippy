@@ -1,98 +1,100 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import AddLocation from "./AddLocation";
-import "./EditBusiness.scss";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import AddLocation from './AddLocation';
+import './EditBusiness.scss';
 
 function EditBusiness() {
-   const { id } = useParams();
-   const navigate = useNavigate();
-   const [business, setBusiness] = useState(null);
-   const [loading, setLoading] = useState(true);
-   const [error, setError] = useState(null);
+	const { id } = useParams();
+	const navigate = useNavigate();
+	const [business, setBusiness] = useState(null);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState(null);
 
-   useEffect(() => {
-      let isMounted = true;
+	useEffect(() => {
+		let isMounted = true;
 
-      const fetchBusiness = async () => {
-         try {
-            setLoading(true);
-            setError(null);
-            const url = `${process.env.REACT_APP_SERVER_URL}/api/locations/${id}`;
-            const response = await fetch(url, {
-               credentials: "include",
-            });
-            const result = await response.json();
+		const fetchBusiness = async () => {
+			try {
+				setLoading(true);
+				setError(null);
+				const url = `${process.env.REACT_APP_SERVER_URL}/api/locations`;
+				const isLocalBackend = (process.env.REACT_APP_SERVER_URL || '').includes('localhost');
+				const response = await fetch(url, {
+					...(isLocalBackend ? { credentials: 'include' } : {}),
+				});
 
-            if (!response.ok) {
-               throw new Error(
-                  result.message ||
-                     `Failed to fetch business (${response.status})`,
-               );
-            }
+				if (!response.ok) {
+					throw new Error(`Failed to fetch businesses (${response.status})`);
+				}
+				const result = await response.json();
 
-            if (isMounted) setBusiness(result.data);
-         } catch (error) {
-            console.error("Error fetching business:", error);
-            if (isMounted) setError(error.message);
-         } finally {
-            if (isMounted) setLoading(false);
-         }
-      };
+				// Find the business with matching ID
+				const businesses = result.data || [];
+				const foundBusiness = businesses.find((b) => b._id === id || b.id === id);
 
-      fetchBusiness();
+				if (!foundBusiness) {
+					throw new Error('Business not found');
+				}
 
-      return () => {
-         isMounted = false;
-      };
-   }, [id]);
+				if (isMounted) setBusiness(foundBusiness);
+			} catch (error) {
+				console.error('Error fetching business:', error);
+				if (isMounted) setError(error.message);
+			} finally {
+				if (isMounted) setLoading(false);
+			}
+		};
 
-   const handleUpdateSuccess = () => {
-      navigate("/admin");
-   };
+		fetchBusiness();
 
-   if (loading) {
-      return (
-         <div className="edit-business-status">Loading business data...</div>
-      );
-   }
+		return () => {
+			isMounted = false;
+		};
+	}, [id]);
 
-   if (error) {
-      return (
-         <div className="edit-business-status edit-business-status--column">
-            <p>Error: {error}</p>
-            <button
-               onClick={() => navigate("/admin")}
-               className="edit-business-status__button"
-            >
-               Back to Admin
-            </button>
-         </div>
-      );
-   }
+	const handleUpdateSuccess = () => {
+		navigate('/admin');
+	};
 
-   if (!business) {
-      return <div className="edit-business-status">Business not found</div>;
-   }
+	if (loading) {
+		return <div className='edit-business-status'>Loading business data...</div>;
+	}
 
-   return (
-      <div className="edit-business-container">
-         <header className="edit-business-header">
-            <h1>{business.name}</h1>
-            <button
-               onClick={() => navigate("/admin")}
-               className="btn-secondary"
-            >
-               ← Back to Admin
-            </button>
-         </header>
-         <AddLocation
-            editMode={true}
-            mode="edit"
-            existingBusiness={business}
-            onSuccess={handleUpdateSuccess}
-         />
-      </div>
-   );
+	if (error) {
+		return (
+			<div className='edit-business-status edit-business-status--column'>
+				<p>Error: {error}</p>
+				<button
+					onClick={() => navigate('/admin')}
+					className='edit-business-status__button'>
+					Back to Admin
+				</button>
+			</div>
+		);
+	}
+
+	if (!business) {
+		return <div className='edit-business-status'>Business not found</div>;
+	}
+
+	return (
+		<div className='edit-business-container'>
+			<header className='edit-business-header'>
+				<h1>{business.name}</h1>
+				<button
+					onClick={() => navigate('/admin')}
+					className='btn-secondary'>
+					← Back to Admin
+				</button>
+			</header>
+			<AddLocation
+				editMode={true}
+				mode='edit'
+				existingBusiness={business}
+				onSuccess={handleUpdateSuccess}
+			/>
+		</div>
+	);
 }
 
 export default EditBusiness;

@@ -209,7 +209,7 @@
 		}
 
 		&--item-price {
-			font-weight: 400;
+			font-weight: 300;
 		}
 
 		&--title {
@@ -483,7 +483,7 @@
 			align-items: center;
 			flex-wrap: wrap;
 			gap: 0.2rem;
-			margin-top: 0.5rem;
+			margin-bottom: 0.5rem;
 		}
 
 		&--hours {
@@ -537,7 +537,7 @@
 	}
 
 	&__status-label {
-		font-size: 0.7rem;
+		font-size: 0.8rem;
 		letter-spacing: 0.01rem;
 	}
 }

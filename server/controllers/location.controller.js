@@ -17,6 +17,7 @@ const allowedLocationFields = [
 	'hours',
 	'drinks',
 	'food',
+	'specials',
 ];
 
 const isPlainObject = (value) => value && typeof value === 'object' && !Array.isArray(value) && !(value instanceof Map);
@@ -86,6 +87,40 @@ const mapFromEntries = (value, entryToPair, { stringifyValues = false } = {}) =>
 	return mapped;
 };
 
+const normalizeNestedMapValue = (value) => {
+	if (value === undefined || value === null) return value;
+
+	if (Array.isArray(value)) {
+		return value.map((item) => normalizeNestedMapValue(item)).filter((item) => item !== undefined && item !== null);
+	}
+
+	if (isPlainObject(value) || value instanceof Map) {
+		const normalizedMap = mapFromEntries(value, (entry) => {
+			if (!entry) return null;
+			if (Array.isArray(entry) && entry.length >= 2) {
+				return [entry[0], normalizeNestedMapValue(entry[1])];
+			}
+			if (isPlainObject(entry) && entry.key !== undefined) {
+				return [entry.key, normalizeNestedMapValue(entry.value)];
+			}
+			return null;
+		});
+
+		return Object.fromEntries(normalizedMap);
+	}
+
+	return String(value).trim();
+};
+
+const normalizeSpecials = (specials) => {
+	const normalized = normalizeNestedMapValue(specials);
+	if (isPlainObject(normalized)) {
+		return new Map(Object.entries(normalized));
+	}
+	if (normalized instanceof Map) return normalized;
+	return new Map();
+};
+
 const normalizeHours = (hours) =>
 	mapFromEntries(
 		hours,
@@ -136,6 +171,7 @@ const sanitizeLocationPayload = (payload = {}) => {
 	if (Object.prototype.hasOwnProperty.call(sanitized, 'hours')) sanitized.hours = normalizeHours(sanitized.hours);
 	if (Object.prototype.hasOwnProperty.call(sanitized, 'drinks')) sanitized.drinks = normalizeMenu(sanitized.drinks);
 	if (Object.prototype.hasOwnProperty.call(sanitized, 'food')) sanitized.food = normalizeMenu(sanitized.food);
+	if (Object.prototype.hasOwnProperty.call(sanitized, 'specials')) sanitized.specials = normalizeSpecials(sanitized.specials);
 
 	return sanitized;
 };
