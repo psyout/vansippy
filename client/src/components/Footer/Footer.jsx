@@ -8,7 +8,7 @@ function Footer() {
 			<Typography variant='body2'>
 				{'© Made by '}
 				<Link
-					href='https://felipegonzalez.io'
+					href='https://felipegonzalez.dev'
 					target='_blank'
 					rel='noopener noreferrer'
 					className='footer__link'>
