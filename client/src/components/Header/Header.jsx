@@ -5,8 +5,10 @@ import "./Header.scss";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import ClearIcon from "@mui/icons-material/Clear";
 
-function Header({ handleSearchInput, onProfileClick }) {
+function Header({ search, handleSearchInput, onClearSearch, onProfileClick }) {
    return (
       <header className="header-container">
          <div className="header-container__logo">
@@ -21,6 +23,7 @@ function Header({ handleSearchInput, onProfileClick }) {
                noValidate
                autoComplete="off"
                component="form"
+               onSubmit={(event) => event.preventDefault()}
                sx={{
                   display: "flex",
                   alignItems: "center",
@@ -41,6 +44,7 @@ function Header({ handleSearchInput, onProfileClick }) {
                      },
                   }}
                   label="Search for neighborhood or place"
+                  value={search}
                   variant="outlined"
                   color="primary"
                   onChange={handleSearchInput}
@@ -48,17 +52,31 @@ function Header({ handleSearchInput, onProfileClick }) {
                   InputProps={{
                      endAdornment: (
                         <InputAdornment position="end">
-                           <SearchIcon className="header-search-icon" />
+                           {search ? (
+                              <IconButton
+                                 aria-label="Clear search"
+                                 edge="end"
+                                 onClick={onClearSearch}
+                                 size="small"
+                              >
+                                 <ClearIcon />
+                              </IconButton>
+                           ) : (
+                              <SearchIcon className="header-search-icon" />
+                           )}
                         </InputAdornment>
                      ),
                   }}
                />
             </Box>
-            <ProfileIcon
-               className="header-profile-icon"
+            <button
+               type="button"
+               className="header-profile-button"
                onClick={onProfileClick}
-               titleAccess="User Profile"
-            ></ProfileIcon>
+               aria-label="Open admin sign in"
+            >
+               <ProfileIcon className="header-profile-icon" aria-hidden="true" />
+            </button>
          </div>
       </header>
    );

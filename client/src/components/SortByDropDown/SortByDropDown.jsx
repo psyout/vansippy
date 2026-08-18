@@ -1,12 +1,31 @@
 import React from 'react';
 import './SortByDropDown.scss';
 
-function SortByDropDown({ options, value, onChange, filters, filterByValue, onFilterByChange, hoodFilters, hoodByValue, onHoodByChange }) {
+function SortByDropDown({
+	filters,
+	filterByValue,
+	onFilterByChange,
+	hoodFilters,
+	hoodByValue,
+	onHoodByChange,
+	openNow,
+	onOpenNowChange,
+	onClear,
+	hasActiveFilters,
+}) {
 	return (
-		<div className='options-dropdown'>
+		<div
+			className='options-dropdown'
+			aria-label='Venue filters'>
 			<div className='filter-dropdown'>
-				<label className='options-dropdown__label'>Filter by:</label>
+				<label
+					className='options-dropdown__label'
+					htmlFor='category-filter'>
+					Category
+				</label>
 				<select
+					id='category-filter'
+					aria-label='Filter by category'
 					className='options-dropdown__select'
 					value={filterByValue}
 					onChange={onFilterByChange}>
@@ -21,8 +40,14 @@ function SortByDropDown({ options, value, onChange, filters, filterByValue, onFi
 			</div>
 
 			<div className='filter-dropdown'>
-				<label className='options-dropdown__label'>Look for:</label>
+				<label
+					className='options-dropdown__label'
+					htmlFor='neighbourhood-filter'>
+					Neighbourhood
+				</label>
 				<select
+					id='neighbourhood-filter'
+					aria-label='Filter by neighbourhood'
 					className='options-dropdown__select'
 					value={hoodByValue}
 					onChange={onHoodByChange}>
@@ -35,6 +60,24 @@ function SortByDropDown({ options, value, onChange, filters, filterByValue, onFi
 					))}
 				</select>
 			</div>
+
+			<label className={`options-dropdown__toggle ${openNow ? 'options-dropdown__toggle--active' : ''}`}>
+				<input
+					type='checkbox'
+					checked={openNow}
+					onChange={onOpenNowChange}
+				/>
+				Happy Hour
+			</label>
+
+			{hasActiveFilters && (
+				<button
+					type='button'
+					className='options-dropdown__clear'
+					onClick={onClear}>
+					Clear all
+				</button>
+			)}
 		</div>
 	);
 }

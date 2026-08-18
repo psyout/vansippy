@@ -61,33 +61,78 @@ a:visited {
 .container {
 	display: grid;
 	grid-template-columns: 1fr;
-	grid-template-rows: 1fr;
+	grid-template-rows: auto 1fr;
 	min-height: 100dvh;
 	grid-template-areas:
 		'header'
-		'main'
 		'aside';
 
 	@include tablet {
 		grid-auto-flow: row;
-		grid-template-columns: 48rem 1fr;
+		grid-template-columns: clamp(32rem, 46vw, 48rem) minmax(0, 1fr);
+		grid-template-rows: auto 1fr;
 		grid-template-areas:
 			'header header'
 			'aside main';
+	}
+
+	@include desktop {
+		grid-template-columns: 48rem minmax(0, 1fr);
 	}
 }
 
 // Desktop map visibility
 .desktop-map {
 	display: none;
+	grid-area: main;
+
+	&--mobile-visible {
+		display: block;
+		grid-area: aside;
+		height: calc(100dvh - 132px);
+	}
 
 	@include tablet {
 		display: block;
+		grid-area: main;
+		height: auto;
+	}
+}
+
+.mobile-view-switch {
+	position: fixed;
+	left: 50%;
+	bottom: calc(1rem + env(safe-area-inset-bottom));
+	transform: translateX(-50%);
+	z-index: 20;
+	display: flex;
+	padding: 0.25rem;
+	border-radius: 999px;
+	background: #fff;
+	box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+
+	button {
+		min-width: 72px;
+		min-height: 42px;
+		border-radius: 999px;
+		font: 600 0.9rem var(--font-primary);
+		color: $color-card-header;
+		cursor: pointer;
+	}
+
+	.is-active {
+		background: $color-card-header;
+		color: #fff;
+	}
+
+	@include tablet {
+		display: none;
 	}
 }
 
 :focus-visible {
-	outline: 0.1px solid $color-card-header;
+	outline: 3px solid $color-card-header;
+	outline-offset: 2px;
 }
 
 a:focus-visible {

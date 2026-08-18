@@ -4,8 +4,9 @@ import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import SortByDropDown from '../SortByDropDown/SortByDropDown';
 import Footer from '../Footer/Footer';
 import Card from '../Card/Card';
-import { options, filters, hoodFilter } from './SearchBy';
+import { filters, hoodFilter } from './SearchBy';
 import formatHours from './FormatHours';
+import isBusinessOpen from '../../utils/isBusinessOpen';
 
 const haversineKm = ([lng1, lat1], [lng2, lat2]) => {
 	const toRad = (deg) => (deg * Math.PI) / 180;
@@ -16,14 +17,14 @@ const haversineKm = ([lng1, lat1], [lng2, lat2]) => {
 	return 2 * R * Math.asin(Math.sqrt(a));
 };
 
-const filterAndSort = (features, search, filterBy, hoodBy, sortBy, excludeColumns, userCenter) => {
+const filterAndSort = (features, search, filterBy, hoodBy, excludeColumns, userCenter, openNow) => {
 	const q = search.toLowerCase();
-	const hoursStr = (hours) => Object.values(hours || {}).join('|');
 
 	const filtered = features
 		.filter(({ properties }) => !search || Object.keys(properties).some((key) => !excludeColumns.includes(key) && properties[key]?.toString().toLowerCase().includes(q)))
 		.filter(({ properties }) => !filterBy || properties.category === filterBy)
-		.filter(({ properties }) => !hoodBy || properties.neighbourhoods === hoodBy);
+		.filter(({ properties }) => !hoodBy || properties.neighbourhoods === hoodBy)
+		.filter(({ properties }) => !openNow || isBusinessOpen(properties.hours) === true);
 
 	if (userCenter) {
 		return filtered
@@ -35,20 +36,26 @@ const filterAndSort = (features, search, filterBy, hoodBy, sortBy, excludeColumn
 			.map(({ __distance, ...rest }) => rest);
 	}
 
-	if (sortBy === 'name') return filtered.sort((a, b) => a.properties.name.localeCompare(b.properties.name));
-	if (sortBy === 'hours') return filtered.sort((a, b) => hoursStr(a.properties.hours).localeCompare(hoursStr(b.properties.hours)));
-	return filtered;
+	return filtered.sort((a, b) => a.properties.name.localeCompare(b.properties.name));
 };
 
-function Aside({ selectedBusiness, setSelectedBusiness, geoJson, search, businesses, userCenter, isLoading = false }) {
-	const [sortBy, setSortBy] = useState('');
+function Aside({ selectedBusiness, geoJson, search, onClearSearch, businesses, userCenter, isLoading = false, error, onRetry, mobileHidden = false }) {
 	const [filterBy, setFilterBy] = useState('');
 	const [hoodBy, setHoodBy] = useState('');
+	const [openNow, setOpenNow] = useState(false);
 	const [isFirstLoad, setIsFirstLoad] = useState(true);
 	const excludeColumns = ['id'];
 
 	// Ensure geoJson is available before processing
-	const sortedFeatures = geoJson?.features ? filterAndSort(geoJson.features, search, filterBy, hoodBy, sortBy, excludeColumns, userCenter) : [];
+	const sortedFeatures = geoJson?.features ? filterAndSort(geoJson.features, search, filterBy, hoodBy, excludeColumns, userCenter, openNow) : [];
+	const hasActiveFilters = Boolean(search || filterBy || hoodBy || openNow);
+
+	const clearAll = () => {
+		setFilterBy('');
+		setHoodBy('');
+		setOpenNow(false);
+		onClearSearch();
+	};
 
 	// Track if user has made a selection (not first load anymore)
 	// Reset first load state when user selects a business (from map or card click)
@@ -72,7 +79,7 @@ function Aside({ selectedBusiness, setSelectedBusiness, geoJson, search, busines
 		.map(({ properties }, index) => {
 			const isSelected = selectedBusiness === properties.id;
 			// Only expand first card on initial load (when no selection has been made)
-			const shouldExpandFirst = Boolean(isFirstLoad && index === 0 && !selectedBusiness && properties.drinks);
+			const shouldExpandFirst = false;
 			// Expand selected card when user clicks a pin (after first load)
 			const shouldExpandSelected = Boolean(!isFirstLoad && isSelected && properties.drinks);
 
@@ -109,19 +116,35 @@ function Aside({ selectedBusiness, setSelectedBusiness, geoJson, search, busines
 	}
 
 	return (
-		<div className='aside'>
+		<aside className={`aside ${mobileHidden ? 'aside--mobile-hidden' : ''}`}>
 			<SortByDropDown
-				options={options}
-				value={sortBy}
-				onChange={(e) => setSortBy(e.target.value)}
 				filters={filters}
 				filterByValue={filterBy}
 				onFilterByChange={(e) => setFilterBy(e.target.value)}
 				hoodFilters={hoodFilter}
 				hoodByValue={hoodBy}
 				onHoodByChange={(e) => setHoodBy(e.target.value)}
+				openNow={openNow}
+				onOpenNowChange={(e) => setOpenNow(e.target.checked)}
+				onClear={clearAll}
+				hasActiveFilters={hasActiveFilters}
 			/>
-			<ul className='aside__list'>
+			<div className='aside__list'>
+				{error && !isLoading ? (
+					<div className='aside__state' role='alert'>
+						<span className='aside__state-icon' aria-hidden='true'>!</span>
+						<h3>We couldn't load the happy hours</h3>
+						<p>Check your connection and try again.</p>
+						<button type='button' onClick={onRetry}>Try again</button>
+					</div>
+				) : !isLoading && renderCards.length === 0 ? (
+					<div className='aside__state' aria-live='polite'>
+						<span className='aside__state-icon' aria-hidden='true'>⌕</span>
+						<h3>No happy hours match</h3>
+						<p>Try a different search or remove a filter.</p>
+						{hasActiveFilters && <button type='button' onClick={clearAll}>Clear filters</button>}
+					</div>
+				) : (
 				<ResponsiveMasonry columnsCountBreakPoints={{ 450: 1, 690: 2, 950: 2 }}>
 					<Masonry
 						containerWidth={800}
@@ -129,9 +152,10 @@ function Aside({ selectedBusiness, setSelectedBusiness, geoJson, search, busines
 						{isLoading ? skeletonCards : renderCards}
 					</Masonry>
 				</ResponsiveMasonry>
-			</ul>
+				)}
+			</div>
 			<Footer />
-		</div>
+		</aside>
 	);
 }
 

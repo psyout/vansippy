@@ -220,7 +220,7 @@ function Card({
 					animation='wave'
 					variant='rectangular'
 					width='100%'
-					height={150}
+					height={128}
 				/>
 
 				<CardContent className='restaurant-card__skeleton-content'>
@@ -313,6 +313,7 @@ function Card({
 			sx={{ backgroundColor: '#ffffff', overflow: 'hidden' }}>
 			{/* Header */}
 			<CardHeader
+				sx={{ padding: '0.75rem' }}
 				avatar={avatar}
 				title={
 					<Typography
@@ -343,9 +344,9 @@ function Card({
 					alt={title}
 					sx={{
 						aspectRatio: '16/9',
-						maxHeight: '150px',
+						maxHeight: '128px',
 						width: '100%',
-						height: 150,
+						height: 128,
 						objectFit: 'cover',
 					}}
 					onLoad={handleImageLoad}
@@ -357,13 +358,13 @@ function Card({
 						animation='wave'
 						variant='rectangular'
 						width='100%'
-						height={150}
+						height={128}
 						className='restaurant-card__media-skeleton'
 					/>
 				)}
 			</div>
 			{/* Content */}
-			<CardContent sx={{ backgroundColor: '#ffffff' }}>
+			<CardContent sx={{ backgroundColor: '#ffffff', padding: '0.75rem 1rem', '&:last-child': { paddingBottom: '0.75rem' } }}>
 				<Typography
 					variant='body2'
 					color='text.secondary'

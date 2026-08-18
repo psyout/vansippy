@@ -45,7 +45,7 @@ function LoginForm({ onSuccess }) {
 	return (
 		<div className='admin-login-form'>
 			<header className='login-header'>
-				<h1>Admin Login</h1>
+					<h1 id='admin-login-title'>Admin Login</h1>
 				<p>Access the business management dashboard</p>
 			</header>
 
@@ -60,6 +60,7 @@ function LoginForm({ onSuccess }) {
 						value={username}
 						onChange={(e) => setUsername(e.target.value)}
 						placeholder='Enter your email'
+						autoFocus
 						required
 					/>
 				</div>

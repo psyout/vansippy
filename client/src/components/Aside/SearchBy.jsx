@@ -1,8 +1,3 @@
-export const options = [
-	{ value: 'name', label: 'Name' },
-	{ value: 'hours', label: 'Time' },
-];
-
 export const filters = [
 	{ value: '', label: 'Categories' },
 	{ value: 'Seafood', label: 'Seafood' },

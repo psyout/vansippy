@@ -26,6 +26,7 @@ function Home() {
 
 	// Loading state for business cards
 	const [isLoadingBusinesses, setIsLoadingBusinesses] = useState(true);
+	const [loadError, setLoadError] = useState(false);
 
 	// Keep cards skeletonized until browser location is resolved or unavailable
 	const [locationStatus, setLocationStatus] = useState('pending');
@@ -38,6 +39,7 @@ function Home() {
 
 	// Login modal visibility
 	const [showLogin, setShowLogin] = useState(false);
+	const [mobileView, setMobileView] = useState('list');
 
 	// Reference to map container div
 	const mapContainer = useRef(null);
@@ -52,11 +54,13 @@ function Home() {
 	const fetchGeoJson = async (signal) => {
 		try {
 			setIsLoadingBusinesses(true);
+			setLoadError(false);
 
 			const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/locations`, {
 				signal,
 				credentials: 'include',
 			});
+			if (!response.ok) throw new Error('Unable to load venues');
 
 			const result = await response.json();
 
@@ -107,6 +111,7 @@ function Home() {
 			// Ignore aborted requests
 			if (error.name !== 'AbortError') {
 				console.error('Error fetching GeoJSON data:', error);
+				setLoadError(true);
 			}
 		} finally {
 			if (!signal?.aborted) {
@@ -227,6 +232,42 @@ function Home() {
 		};
 	}, []);
 
+	useEffect(() => {
+		if (!showLogin) return undefined;
+
+		const previousOverflow = document.body.style.overflow;
+		document.body.style.overflow = 'hidden';
+		const handleKeyDown = (event) => {
+			if (event.key === 'Escape') setShowLogin(false);
+			if (event.key === 'Tab') {
+				const focusable = Array.from(document.querySelectorAll('.login-modal-card button:not([disabled]), .login-modal-card input:not([disabled])'));
+				if (!focusable.length) return;
+				const first = focusable[0];
+				const last = focusable[focusable.length - 1];
+				if (event.shiftKey && document.activeElement === first) {
+					event.preventDefault();
+					last.focus();
+				} else if (!event.shiftKey && document.activeElement === last) {
+					event.preventDefault();
+					first.focus();
+				}
+			}
+		};
+		document.addEventListener('keydown', handleKeyDown);
+
+		return () => {
+			document.body.style.overflow = previousOverflow;
+			document.removeEventListener('keydown', handleKeyDown);
+			document.querySelector('.header-profile-button')?.focus();
+		};
+	}, [showLogin]);
+
+	useEffect(() => {
+		if (mobileView !== 'map' || !mapRef.current) return;
+		const frame = window.requestAnimationFrame(() => mapRef.current?.resize());
+		return () => window.cancelAnimationFrame(frame);
+	}, [mobileView]);
+
 	// Render map markers whenever GeoJSON changes
 	useEffect(() => {
 		if (!geoJson || !mapRef.current) return;
@@ -280,32 +321,46 @@ function Home() {
 	return (
 		<div className='container'>
 			<Header
+				search={search}
 				handleSearchInput={(e) => setSearch(e.target.value)}
+				onClearSearch={() => setSearch('')}
 				onProfileClick={() => setShowLogin(true)}
 			/>
+
+			<div className='mobile-view-switch' aria-label='Choose results view'>
+				<button type='button' className={mobileView === 'list' ? 'is-active' : ''} onClick={() => setMobileView('list')} aria-pressed={mobileView === 'list'}>List</button>
+				<button type='button' className={mobileView === 'map' ? 'is-active' : ''} onClick={() => setMobileView('map')} aria-pressed={mobileView === 'map'}>Map</button>
+			</div>
 
 			<Aside
 				selectedBusiness={selectedBusiness}
 				setSelectedBusiness={setSelectedBusiness}
 				geoJson={geoJson}
 				search={search}
+				onClearSearch={() => setSearch('')}
 				businesses={businesses}
 				userCenter={userCenter}
 				isLoading={isLoadingBusinesses || locationStatus === 'pending'}
+				error={loadError}
+				onRetry={() => fetchGeoJson()}
+				mobileHidden={mobileView === 'map'}
 			/>
 
-			<div className='desktop-map'>
+			<div className={`desktop-map ${mobileView === 'map' ? 'desktop-map--mobile-visible' : ''}`}>
 				<Main mapContainer={mapContainer} />
 			</div>
 
 			{/* Login modal */}
 			{showLogin && (
-				<div className='login-modal-overlay'>
-					<div className='login-modal-card'>
+				<div className='login-modal-overlay' onMouseDown={(event) => {
+					if (event.target === event.currentTarget) setShowLogin(false);
+				}}>
+					<div className='login-modal-card' role='dialog' aria-modal='true' aria-labelledby='admin-login-title'>
 						{/* Close modal button */}
 						<button
 							onClick={() => setShowLogin(false)}
-							className='login-modal-close'>
+							className='login-modal-close'
+							aria-label='Close admin sign in'>
 							×
 						</button>
 
