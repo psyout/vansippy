@@ -5,6 +5,7 @@
 .options-dropdown {
 	align-items: flex-end;
 	display: flex;
+	flex: 0 0 auto;
 	margin: 0;
 	justify-content: flex-start;
 	border-radius: 0.4rem;
@@ -115,20 +116,37 @@
 
 @media screen and (max-width: ($tablet-breakpoint - 1px)) {
 	.options-dropdown {
+		align-items: center;
 		flex-wrap: nowrap;
+		min-height: 48px;
+		width: calc(100% + 3rem);
+		max-width: none;
+		margin-left: -1.5rem;
+		overflow-x: scroll;
+		overflow-y: hidden;
+		padding: 0.25rem 1.5rem;
+		scrollbar-width: none;
+		overscroll-behavior-x: contain;
+		-webkit-overflow-scrolling: touch;
+		touch-action: pan-x;
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
 
 		.filter-dropdown {
-			flex: 1 1 0;
-			min-width: 0;
+			flex: 0 0 auto;
 		}
 
 		&__select {
-			width: 100%;
-			min-width: 0;
+			width: auto;
+			min-width: max-content;
 		}
 
-		&__toggle {
-			flex-shrink: 0;
+		&__toggle,
+		&__clear {
+			flex: 0 0 auto;
+			white-space: nowrap;
 		}
 	}
 }
