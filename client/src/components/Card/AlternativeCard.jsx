@@ -112,7 +112,7 @@ function AlternativeCard({
 					{isOpen !== null && (
 						<span className={`alternative-card__status alternative-card__status--${isOpen ? 'open' : 'closed'}`}>
 							<span aria-hidden='true' />
-							{compact ? (isOpen ? 'Happy hour' : 'Ended') : (isOpen ? 'Happy hour' : "Happy hour's over")}
+							{compact ? (isOpen ? 'Happy hour' : 'Ended') : isOpen ? 'Happy hour time!' : "Happy hour's over"}
 						</span>
 					)}
 				</div>
@@ -138,7 +138,7 @@ function AlternativeCard({
 
 					<div className='alternative-card__hours'>
 						<FiClock aria-hidden='true' />
-						<div>{time?.length ? (compact ? time[0] : time) : <span>Hours unavailable</span>}</div>
+						<div>{time?.length ? compact ? time[0] : time : <span>Hours unavailable</span>}</div>
 					</div>
 
 					{compact && (
@@ -170,53 +170,55 @@ function AlternativeCard({
 				</div>
 			</div>
 
-			{!compact && <div className='alternative-card__actions'>
-				<div
-					className='alternative-card__menu-actions'
-					aria-label='Venue menus'>
-					<button
-						type='button'
-						className={`alternative-card__menu-button--primary ${expanded === 'drinks' ? 'is-active' : ''}`}
-						onClick={() => toggleExpanded('drinks')}
-						aria-expanded={expanded === 'drinks'}>
-						<TbBeer aria-hidden='true' /> Drinks
-					</button>
-					<button
-						type='button'
-						className={`alternative-card__menu-button--primary ${expanded === 'food' ? 'is-active' : ''}`}
-						onClick={() => toggleExpanded('food')}
-						aria-expanded={expanded === 'food'}>
-						<TbBurger aria-hidden='true' /> Food
-					</button>
-					{hasSpecials && (
+			{!compact && (
+				<div className='alternative-card__actions'>
+					<div
+						className='alternative-card__menu-actions'
+						aria-label='Venue menus'>
 						<button
 							type='button'
-							className={expanded === 'specials' ? 'is-active' : ''}
-							onClick={() => toggleExpanded('specials')}
-							aria-expanded={expanded === 'specials'}
-							aria-label='Specials'>
-							<TbCalendarEvent aria-hidden='true' /> <span className='alternative-card__specials-label'>Specials</span>
+							className={`alternative-card__menu-button--primary ${expanded === 'drinks' ? 'is-active' : ''}`}
+							onClick={() => toggleExpanded('drinks')}
+							aria-expanded={expanded === 'drinks'}>
+							<TbBeer aria-hidden='true' /> Drinks
 						</button>
-					)}
-				</div>
+						<button
+							type='button'
+							className={`alternative-card__menu-button--primary ${expanded === 'food' ? 'is-active' : ''}`}
+							onClick={() => toggleExpanded('food')}
+							aria-expanded={expanded === 'food'}>
+							<TbBurger aria-hidden='true' /> Food
+						</button>
+						{hasSpecials && (
+							<button
+								type='button'
+								className={expanded === 'specials' ? 'is-active' : ''}
+								onClick={() => toggleExpanded('specials')}
+								aria-expanded={expanded === 'specials'}
+								aria-label='Specials'>
+								<TbCalendarEvent aria-hidden='true' /> <span className='alternative-card__specials-label'>Specials</span>
+							</button>
+						)}
+					</div>
 
-				<div className='alternative-card__quick-actions'>
-					<a
-						href={contact_number ? `tel:${contact_number}` : undefined}
-						aria-disabled={!contact_number}
-						aria-label='Call venue'>
-						<FiPhone aria-hidden='true' />
-					</a>
-					{website && (
-						<button
-							type='button'
-							onClick={openWebsite}
-							aria-label='Open venue website'>
-							<FiGlobe aria-hidden='true' />
-						</button>
-					)}
+					<div className='alternative-card__quick-actions'>
+						<a
+							href={contact_number ? `tel:${contact_number}` : undefined}
+							aria-disabled={!contact_number}
+							aria-label='Call venue'>
+							<FiPhone aria-hidden='true' />
+						</a>
+						{website && (
+							<button
+								type='button'
+								onClick={openWebsite}
+								aria-label='Open venue website'>
+								<FiGlobe aria-hidden='true' />
+							</button>
+						)}
+					</div>
 				</div>
-			</div>}
+			)}
 
 			{!compact && expanded && (
 				<div className='alternative-card__drawer'>
