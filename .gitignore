@@ -60,3 +60,4 @@ client/.git-backup-before-monorepo/
 
 # Misc
 .htaccess
+!client/public/.htaccess
