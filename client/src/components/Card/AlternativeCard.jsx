@@ -112,7 +112,7 @@ function AlternativeCard({
 					{isOpen !== null && (
 						<span className={`alternative-card__status alternative-card__status--${isOpen ? 'open' : 'closed'}`}>
 							<span aria-hidden='true' />
-							{compact ? (isOpen ? 'Happy hour' : 'Ended') : isOpen ? 'Happy hour time!' : "Happy hour's over"}
+							{compact ? (isOpen ? 'Happy hour' : 'Ended') : isOpen ? `Happy hour\u2019s on!` : `Your hour\u2019s coming`}
 						</span>
 					)}
 				</div>
