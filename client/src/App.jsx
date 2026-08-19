@@ -1,6 +1,6 @@
 import "./App.scss";
 import Home from "./assets/pages/Home";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import AddLocation from "./assets/pages/AddLocation";
 import Admin from "./assets/pages/Admin";
 import EditBusiness from "./assets/pages/EditBusiness";
@@ -11,7 +11,7 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 
 function App() {
    return (
-      <BrowserRouter
+      <HashRouter
          future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
       >
          <div className="App">
@@ -52,7 +52,7 @@ function App() {
                <Route path="/business-login" element={<BusinessLogin />} />
             </Routes>
          </div>
-      </BrowserRouter>
+      </HashRouter>
    );
 }
 
