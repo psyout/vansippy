@@ -99,6 +99,49 @@ a:visited {
 	}
 }
 
+@media screen and (min-width: 768px) and (max-width: 1268px) {
+	.container {
+		grid-template-columns: 1fr;
+		grid-template-areas:
+			'header'
+			'aside';
+	}
+
+	.desktop-map {
+		position: fixed;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: 19;
+		display: block;
+		height: 100dvh;
+		overflow: hidden;
+		border-radius: 0;
+		box-shadow: 0 -10px 40px rgba(43, 40, 64, 0.24);
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+		transform: translateY(calc(100% + 2rem));
+		transition:
+			transform 280ms ease-out,
+			opacity 200ms ease-out,
+			visibility 0s linear 280ms;
+
+		.main {
+			height: 100%;
+		}
+
+		&--mobile-visible {
+			height: 30dvh;
+			opacity: 1;
+			visibility: visible;
+			pointer-events: auto;
+			transform: translateY(0);
+			transition-delay: 0s;
+		}
+	}
+}
+
 .mobile-view-switch {
 	position: fixed;
 	left: 50%;
@@ -125,7 +168,7 @@ a:visited {
 		color: #fff;
 	}
 
-	@include tablet {
+	@media screen and (min-width: 1269px) {
 		display: none;
 	}
 }

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import SortByDropDown from '../SortByDropDown/SortByDropDown';
 import Footer from '../Footer/Footer';
-import Card from '../Card/Card';
+import Card from '../Card';
 import { filters, hoodFilter } from './SearchBy';
 import formatHours from './FormatHours';
 import isBusinessOpen from '../../utils/isBusinessOpen';
@@ -145,7 +145,7 @@ function Aside({ selectedBusiness, geoJson, search, onClearSearch, businesses, u
 						{hasActiveFilters && <button type='button' onClick={clearAll}>Clear filters</button>}
 					</div>
 				) : (
-				<ResponsiveMasonry columnsCountBreakPoints={{ 450: 1, 690: 2, 950: 2 }}>
+				<ResponsiveMasonry columnsCountBreakPoints={{ 450: 1, 690: 2, 1050: 3, 1269: 2 }}>
 					<Masonry
 						containerWidth={800}
 						gutter='30px'>

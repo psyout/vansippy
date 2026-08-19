@@ -1,16 +1,28 @@
 import Header from '../../components/Header/Header';
 import Main from '../../components/Main/Main';
 import Aside from '../../components/Aside/Aside';
+import Card from '../../components/Card';
 import LoginForm from '../../components/LoginForm/LoginForm';
 import './Home.scss';
 
 import mapboxgl from 'mapbox-gl';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 import PlaceHolder from '../../assets/images/placeholder.jpg';
+import formatHours from '../../components/Aside/FormatHours';
+
+const distanceBetween = ([lng1, lat1], [lng2, lat2]) => {
+	const toRadians = (degrees) => (degrees * Math.PI) / 180;
+	const latitudeDelta = toRadians(lat2 - lat1);
+	const longitudeDelta = toRadians(lng2 - lng1);
+	const calculation = Math.sin(latitudeDelta / 2) ** 2
+		+ Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) * Math.sin(longitudeDelta / 2) ** 2;
+
+	return 2 * Math.atan2(Math.sqrt(calculation), Math.sqrt(1 - calculation));
+};
 
 function Home() {
 	const navigate = useNavigate();
@@ -49,6 +61,24 @@ function Home() {
 
 	// Store markers to clean them later
 	const markersRef = useRef([]);
+
+	// Keep a useful venue card visible in map view before the first marker tap.
+	const activeMapFeature = useMemo(() => {
+		const features = geoJson?.features ?? [];
+		const selectedFeature = features.find(({ properties }) => properties.id === selectedBusiness);
+
+		if (selectedFeature) return selectedFeature;
+		if (!userCenter) return features[0] ?? null;
+
+		return features.reduce((closest, feature) => {
+			if (!closest) return feature;
+
+			return distanceBetween(userCenter, feature.geometry.coordinates)
+				< distanceBetween(userCenter, closest.geometry.coordinates)
+				? feature
+				: closest;
+		}, null);
+	}, [geoJson, selectedBusiness, userCenter]);
 
 	// Fetch businesses from backend API
 	const fetchGeoJson = async (signal) => {
@@ -284,7 +314,14 @@ function Home() {
 		// Create and add new markers
 		createMarkers(geoJson).forEach((marker) => {
 			// Handle marker click
-			const handler = () => setSelectedBusiness(marker.id);
+			const handler = () => {
+				setSelectedBusiness(marker.id);
+
+				// The venue card replaces the small Mapbox popup on mobile.
+				if (window.matchMedia('(max-width: 767px)').matches) {
+					window.setTimeout(() => marker.getPopup()?.remove(), 0);
+				}
+			};
 
 			// Add click listener
 			marker.getElement().addEventListener('click', handler);
@@ -310,6 +347,12 @@ function Home() {
 			markersRef.current = [];
 		};
 	}, [geoJson]);
+
+	useEffect(() => {
+		markersRef.current.forEach(({ marker }) => {
+			marker.getElement().classList.toggle('map-marker--selected', marker.id === activeMapFeature?.properties.id);
+		});
+	}, [activeMapFeature]);
 
 	// Redirect after successful login
 	const handleLoginSuccess = () => {
@@ -348,6 +391,33 @@ function Home() {
 
 			<div className={`desktop-map ${mobileView === 'map' ? 'desktop-map--mobile-visible' : ''}`}>
 				<Main mapContainer={mapContainer} />
+				{mobileView === 'map' && activeMapFeature && (
+					<div
+						className='mobile-map-card'
+						role='region'
+						aria-live='polite'
+						aria-label={`Selected venue: ${activeMapFeature.properties.name}`}>
+						<Card
+							key={activeMapFeature.properties.id}
+							title={activeMapFeature.properties.name}
+							address={activeMapFeature.properties.address}
+							contact_number={activeMapFeature.properties.contact_number}
+							time={formatHours(activeMapFeature.properties.hours)}
+							hours={activeMapFeature.properties.hours}
+							drinks={activeMapFeature.properties.drinks}
+							food={activeMapFeature.properties.food}
+							specials={activeMapFeature.properties.specials}
+							website={activeMapFeature.properties.website}
+							image={activeMapFeature.properties.image}
+							isSelected={true}
+							compact={true}
+							onViewDetails={() => {
+								setSelectedBusiness(activeMapFeature.properties.id);
+								setMobileView('list');
+							}}
+						/>
+					</div>
+				)}
 			</div>
 
 			{/* Login modal */}

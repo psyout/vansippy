@@ -68,6 +68,10 @@
 		width: 93%;
 		margin-top: 1rem;
 
+		.MuiOutlinedInput-root {
+			border-radius: 1.1rem;
+		}
+
 		@include tablet {
 			width: 100%;
 			margin-top: 0;

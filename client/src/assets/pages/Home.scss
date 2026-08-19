@@ -47,3 +47,30 @@
 		transform: scale(1.04);
 	}
 }
+
+.mobile-map-card {
+	position: fixed;
+	left: 1rem;
+	right: 1rem;
+	bottom: calc(5.75rem + env(safe-area-inset-bottom));
+	z-index: 18;
+	max-width: 26rem;
+	margin-inline: auto;
+	border-radius: 0.9rem;
+	animation: mapCardIn 180ms ease-out;
+
+	@media screen and (min-width: 768px) {
+		display: none;
+	}
+}
+
+@keyframes mapCardIn {
+	from {
+		opacity: 0;
+		transform: translateY(0.75rem);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}

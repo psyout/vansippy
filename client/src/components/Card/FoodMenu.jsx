@@ -34,7 +34,7 @@ function FoodMenu({ food, website }) {
 							className='restaurant-card__menu--item-food'
 							key={name}>
 							<span>
-								<strong className='restaurant-card__menu--item-name'>{name}</strong>
+								<italic className='restaurant-card__menu--item-name'>{name}</italic>
 								{renderMenuPrice(value)}
 								{renderMenuItems(value)}
 							</span>

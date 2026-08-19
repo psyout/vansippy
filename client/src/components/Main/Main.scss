@@ -51,6 +51,16 @@
 	text-align: center;
 }
 
+.map-marker--selected {
+	z-index: 2;
+	filter: drop-shadow(0 3px 5px rgba(43, 40, 64, 0.45));
+	transform-origin: bottom center;
+
+	svg {
+		transform: scale(1.15);
+	}
+}
+
 .popup h3 {
 	margin-top: 0;
 }
