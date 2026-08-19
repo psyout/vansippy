@@ -39,7 +39,7 @@ const filterAndSort = (features, search, filterBy, hoodBy, excludeColumns, userC
 	return filtered.sort((a, b) => a.properties.name.localeCompare(b.properties.name));
 };
 
-function Aside({ selectedBusiness, geoJson, search, onClearSearch, businesses, userCenter, isLoading = false, error, onRetry, mobileHidden = false }) {
+function Aside({ selectedBusiness, geoJson, search, onClearSearch, businesses, userCenter, isLoading = false, error, onRetry, mobileHidden = false, onEndReachedChange }) {
 	const [filterBy, setFilterBy] = useState('');
 	const [hoodBy, setHoodBy] = useState('');
 	const [openNow, setOpenNow] = useState(false);
@@ -64,6 +64,19 @@ function Aside({ selectedBusiness, geoJson, search, onClearSearch, businesses, u
 			setIsFirstLoad(false);
 		}
 	}, [selectedBusiness]);
+
+	// Reveal the view switch again whenever the result set changes.
+	useEffect(() => {
+		onEndReachedChange?.(false);
+	}, [sortedFeatures.length, isLoading, onEndReachedChange]);
+
+	const handleListScroll = (event) => {
+		const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
+		const isScrollable = scrollHeight - clientHeight > 8;
+		const isAtEnd = isScrollable && scrollTop > 0 && scrollHeight - scrollTop - clientHeight <= 24;
+
+		onEndReachedChange?.(isAtEnd);
+	};
 
 	const skeletonCards = Array.from({ length: 4 }, (_, index) => (
 		<Card
@@ -116,7 +129,9 @@ function Aside({ selectedBusiness, geoJson, search, onClearSearch, businesses, u
 	}
 
 	return (
-		<aside className={`aside ${mobileHidden ? 'aside--mobile-hidden' : ''}`}>
+		<aside
+			className={`aside ${mobileHidden ? 'aside--mobile-hidden' : ''}`}
+			onScroll={handleListScroll}>
 			<SortByDropDown
 				filters={filters}
 				filterByValue={filterBy}

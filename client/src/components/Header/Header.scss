@@ -164,13 +164,16 @@
 	height: 44px;
 	margin-left: 0.5rem;
 	border-radius: 50%;
+	background-color: rgba(43, 40, 64, 0.08);
 	color: $color-card-header;
 	cursor: pointer;
-	transition: background-color 180ms ease, transform 180ms ease;
+	transition:
+		background-color 180ms ease,
+		transform 180ms ease;
 
 	&:hover,
 	&[aria-expanded='true'] {
-		background-color: rgba(43, 40, 64, 0.08);
+		background-color: rgba(43, 40, 64, 0.13);
 	}
 
 	&:active {
@@ -187,7 +190,9 @@
 	grid-template-rows: 0fr;
 	width: 100%;
 	opacity: 0;
-	transition: grid-template-rows 220ms ease, opacity 160ms ease;
+	transition:
+		grid-template-rows 220ms ease,
+		opacity 160ms ease;
 
 	&__inner {
 		overflow: hidden;
@@ -224,7 +229,11 @@
 
 .header-search-icon {
 	color: #2b2840;
-	font-size: 1.4rem;
+	width: 1.8rem !important;
+	height: 1.8rem !important;
+	padding: 0.3rem;
+	border-radius: 50%;
+	background-color: rgba(43, 40, 64, 0.08);
 }
 
 .header-profile-icon {
@@ -242,7 +251,9 @@
 	justify-content: center;
 	cursor: pointer;
 	color: #2b2840;
-	transition: background-color 0.2s ease, transform 0.2s ease;
+	transition:
+		background-color 0.2s ease,
+		transform 0.2s ease;
 
 	&:hover {
 		background: rgba(43, 40, 64, 0.08);

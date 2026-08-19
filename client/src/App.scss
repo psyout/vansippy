@@ -153,6 +153,13 @@ a:visited {
 	border-radius: 999px;
 	background: #fff;
 	box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+	transition: opacity 180ms ease, transform 180ms ease;
+
+	&--hidden {
+		opacity: 0;
+		pointer-events: none;
+		transform: translate(-50%, 0.75rem);
+	}
 
 	button {
 		min-width: 72px;
@@ -170,6 +177,12 @@ a:visited {
 
 	@media screen and (min-width: 1269px) {
 		display: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.mobile-view-switch {
+		transition: none;
 	}
 }
 

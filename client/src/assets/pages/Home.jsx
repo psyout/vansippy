@@ -52,6 +52,7 @@ function Home() {
 	// Login modal visibility
 	const [showLogin, setShowLogin] = useState(false);
 	const [mobileView, setMobileView] = useState('list');
+	const [isListAtEnd, setIsListAtEnd] = useState(false);
 
 	// Reference to map container div
 	const mapContainer = useRef(null);
@@ -370,9 +371,12 @@ function Home() {
 				onProfileClick={() => setShowLogin(true)}
 			/>
 
-			<div className='mobile-view-switch' aria-label='Choose results view'>
-				<button type='button' className={mobileView === 'list' ? 'is-active' : ''} onClick={() => setMobileView('list')} aria-pressed={mobileView === 'list'}>List</button>
-				<button type='button' className={mobileView === 'map' ? 'is-active' : ''} onClick={() => setMobileView('map')} aria-pressed={mobileView === 'map'}>Map</button>
+			<div
+				className={`mobile-view-switch ${mobileView === 'list' && isListAtEnd ? 'mobile-view-switch--hidden' : ''}`}
+				aria-label='Choose results view'
+				aria-hidden={mobileView === 'list' && isListAtEnd}>
+				<button type='button' tabIndex={mobileView === 'list' && isListAtEnd ? -1 : 0} className={mobileView === 'list' ? 'is-active' : ''} onClick={() => setMobileView('list')} aria-pressed={mobileView === 'list'}>List</button>
+				<button type='button' tabIndex={mobileView === 'list' && isListAtEnd ? -1 : 0} className={mobileView === 'map' ? 'is-active' : ''} onClick={() => setMobileView('map')} aria-pressed={mobileView === 'map'}>Map</button>
 			</div>
 
 			<Aside
@@ -387,6 +391,7 @@ function Home() {
 				error={loadError}
 				onRetry={() => fetchGeoJson()}
 				mobileHidden={mobileView === 'map'}
+				onEndReachedChange={setIsListAtEnd}
 			/>
 
 			<div className={`desktop-map ${mobileView === 'map' ? 'desktop-map--mobile-visible' : ''}`}>
