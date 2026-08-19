@@ -32,6 +32,19 @@ const ensureCloudinary = () => {
 	}
 };
 
+const persistImages = async (location) => {
+	const result = await Location.updateOne(
+		{ _id: location._id },
+		{ $set: { images: location.images } },
+		{ runValidators: true },
+	);
+	if (result.matchedCount !== 1) {
+		const error = new Error('Location not found');
+		error.status = 404;
+		throw error;
+	}
+};
+
 const safeSignatureMatch = (received, expected) => {
 	if (!received || received.length !== expected.length) return false;
 	return crypto.timingSafeEqual(Buffer.from(received), Buffer.from(expected));
@@ -141,7 +154,12 @@ export const saveUploadedImage = async (req, res) => {
 			uploadedBy: 'admin',
 		});
 
-		await location.save();
+		try {
+			await persistImages(location);
+		} catch (error) {
+			await cloudinary.uploader.destroy(publicId, { invalidate: true, resource_type: 'image' });
+			throw error;
+		}
 		return res.status(201).json({ success: true, data: location.images });
 	} catch (error) {
 		return handleError(res, error, 'saving uploaded image');
@@ -164,7 +182,7 @@ export const updateLocationImage = async (req, res) => {
 			});
 		}
 
-		await location.save();
+		await persistImages(location);
 		return res.status(200).json({ success: true, data: location.images });
 	} catch (error) {
 		return handleError(res, error, 'updating image');
@@ -189,7 +207,7 @@ export const reorderLocationImages = async (req, res) => {
 		});
 		location.images.sort((a, b) => a.sortOrder - b.sortOrder);
 
-		await location.save();
+		await persistImages(location);
 		return res.status(200).json({ success: true, data: location.images });
 	} catch (error) {
 		return handleError(res, error, 'reordering images');
@@ -222,7 +240,7 @@ export const deleteLocationImage = async (req, res) => {
 			location.images[0].isPrimary = true;
 		}
 
-		await location.save();
+		await persistImages(location);
 		return res.status(200).json({ success: true, data: location.images });
 	} catch (error) {
 		return handleError(res, error, 'deleting image');
