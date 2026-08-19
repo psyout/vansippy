@@ -30,7 +30,7 @@ function ProtectedRoute({ children }) {
 	}, []);
 
 	if (status.loading) return <div>Loading...</div>;
-	if (!status.authenticated) return <Navigate to='/' replace />;
+	if (!status.authenticated) return <Navigate to='/business-login' replace />;
 	return children;
 }
 

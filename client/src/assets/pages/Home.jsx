@@ -13,6 +13,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 
 import PlaceHolder from '../../assets/images/placeholder.jpg';
 import formatHours from '../../components/Aside/FormatHours';
+import { getPrimaryBusinessImage } from '../../utils/getBusinessImage';
 
 const distanceBetween = ([lng1, lat1], [lng2, lat2]) => {
 	const toRadians = (degrees) => (degrees * Math.PI) / 180;
@@ -118,7 +119,7 @@ function Home() {
 						category: location.category,
 
 						// Use placeholder if image missing
-						image: location.image || PlaceHolder,
+						image: getPrimaryBusinessImage(location, PlaceHolder),
 					},
 
 					geometry: {
@@ -135,7 +136,7 @@ function Home() {
 			setBusinesses(
 				locations.map((location) => ({
 					...location,
-					image: location.image || PlaceHolder,
+					image: getPrimaryBusinessImage(location, PlaceHolder),
 				})),
 			);
 		} catch (error) {

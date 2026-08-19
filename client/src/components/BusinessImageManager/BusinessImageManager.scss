@@ -1,0 +1,81 @@
+.business-image-manager {
+	margin-bottom: 2rem;
+	padding: 1.5rem;
+	background: #fff;
+	border: 1px solid #e0e0e0;
+	border-radius: 8px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+
+	&__header {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 1rem;
+
+		h2 { margin: 0 0 0.35rem; color: #2b2840; }
+		p { margin: 0; color: #666; }
+	}
+
+	&__upload {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.75rem 1rem;
+		border-radius: 4px;
+		background: #2b2840;
+		color: #fff;
+		font-weight: 600;
+		cursor: pointer;
+		white-space: nowrap;
+
+		input { display: none; }
+		&.is-disabled { opacity: 0.55; cursor: not-allowed; }
+	}
+
+	&__count { margin: 1rem 0; color: #666; font-size: 0.9rem; }
+	&__message { padding: 0.75rem; border-radius: 4px; }
+	&__message.is-error { color: #8a1c25; background: #fbeaec; }
+	&__message.is-success { color: #176b3a; background: #e9f7ef; }
+	&__empty { padding: 2rem; text-align: center; color: #777; background: #f8f8f8; border-radius: 6px; }
+
+	&__grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+		gap: 1rem;
+	}
+
+	&__card { padding: 0.75rem; border: 1px solid #ddd; border-radius: 6px; }
+	&__preview {
+		position: relative;
+		aspect-ratio: 16 / 9;
+		margin-bottom: 0.75rem;
+		background: #eee;
+		overflow: hidden;
+		border-radius: 4px;
+
+		img { width: 100%; height: 100%; object-fit: cover; display: block; }
+		span { position: absolute; top: 0.5rem; left: 0.5rem; padding: 0.3rem 0.5rem; background: #2b2840; color: #fff; border-radius: 3px; font-size: 0.75rem; }
+	}
+
+	&__card label { display: grid; gap: 0.35rem; color: #555; font-size: 0.85rem; }
+	&__card input { width: 100%; box-sizing: border-box; padding: 0.55rem; border: 1px solid #ccc; border-radius: 4px; }
+
+	&__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+		margin-top: 0.75rem;
+
+		button { padding: 0.45rem 0.6rem; border: 1px solid #ccc; background: #f7f7f7; border-radius: 4px; cursor: pointer; }
+		button:disabled { opacity: 0.5; cursor: not-allowed; }
+		button.is-danger { color: #a51d2a; border-color: #dca9ae; }
+	}
+}
+
+@media (max-width: 600px) {
+	.business-image-manager {
+		padding: 1rem;
+		&__header { flex-direction: column; }
+		&__upload { width: 100%; }
+	}
+}

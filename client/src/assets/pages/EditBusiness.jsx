@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import AddLocation from './AddLocation';
+import BusinessImageManager from '../../components/BusinessImageManager/BusinessImageManager';
 import './EditBusiness.scss';
 
 function EditBusiness() {
@@ -87,6 +88,10 @@ function EditBusiness() {
 					← Back to Admin
 				</button>
 			</header>
+			<BusinessImageManager
+				business={business}
+				onImagesChange={(images) => setBusiness((current) => ({ ...current, images }))}
+			/>
 			<AddLocation
 				editMode={true}
 				mode='edit'

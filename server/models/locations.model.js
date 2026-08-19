@@ -1,5 +1,23 @@
 import mongoose from 'mongoose';
 
+const businessImageSchema = new mongoose.Schema(
+	{
+		publicId: { type: String, required: true },
+		secureUrl: { type: String, required: true },
+		version: { type: Number, required: true },
+		width: { type: Number, required: true },
+		height: { type: Number, required: true },
+		format: { type: String, required: true },
+		bytes: { type: Number, required: true },
+		originalFilename: String,
+		alt: { type: String, trim: true, maxlength: 180, default: '' },
+		isPrimary: { type: Boolean, default: false },
+		sortOrder: { type: Number, default: 0 },
+		uploadedBy: { type: String, enum: ['admin', 'business'], required: true },
+	},
+	{ timestamps: true },
+);
+
 const locationSchema = new mongoose.Schema(
 	{
 		name: { type: String, required: true },
@@ -20,6 +38,17 @@ const locationSchema = new mongoose.Schema(
 		full_address: String,
 		neighbourhoods: String,
 		image: String,
+		images: { type: [businessImageSchema], default: [] },
+		googlePlace: {
+			placeId: { type: String, default: null },
+			matchStatus: {
+				type: String,
+				enum: ['unmatched', 'suggested', 'verified'],
+				default: 'unmatched',
+			},
+			matchedAt: Date,
+			matchedBy: String,
+		},
 
 		category: String,
 
