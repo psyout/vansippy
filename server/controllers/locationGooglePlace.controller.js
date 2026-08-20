@@ -2,6 +2,8 @@ import mongoose from 'mongoose';
 import Location from '../models/locations.model.js';
 
 const PLACES_SEARCH_URL = 'https://places.googleapis.com/v1/places:searchText';
+const PLACE_DETAILS_URL = 'https://places.googleapis.com/v1/places';
+const PHOTO_PREVIEW_LIMIT = 5;
 const SEARCH_FIELD_MASK = [
 	'places.id',
 	'places.displayName',
@@ -129,5 +131,63 @@ export const verifyGooglePlace = async (req, res) => {
 		return res.status(200).json({ success: true, data: googlePlace });
 	} catch (error) {
 		return handleError(res, error, 'verifying Google Place');
+	}
+};
+
+export const getGooglePlacePhotos = async (req, res) => {
+	try {
+		ensurePlacesConfigured();
+		const location = await getLocation(req.params.id);
+		const placeId = location.googlePlace?.placeId;
+
+		if (location.googlePlace?.matchStatus !== 'verified' || !placeId) {
+			return res.status(409).json({ success: false, message: 'Verify the Google Places match first' });
+		}
+
+		const detailsResponse = await fetch(`${PLACE_DETAILS_URL}/${encodeURIComponent(placeId)}`, {
+			headers: {
+				'X-Goog-Api-Key': process.env.GOOGLE_PLACES_API_KEY.trim(),
+				'X-Goog-FieldMask': 'id,photos',
+			},
+		});
+		const details = await detailsResponse.json().catch(() => ({}));
+
+		if (!detailsResponse.ok) {
+			console.error('Google Place Details response:', detailsResponse.status, details?.error?.status);
+			const error = new Error(details?.error?.message || `Google Places returned ${detailsResponse.status}`);
+			error.status = detailsResponse.status === 429 ? 429 : 502;
+			throw error;
+		}
+
+		const photos = await Promise.all((details.photos || []).slice(0, PHOTO_PREVIEW_LIMIT).map(async (photo) => {
+			const mediaUrl = new URL(`${PLACE_DETAILS_URL}/${photo.name.replace(/^places\//, '')}/media`);
+			mediaUrl.searchParams.set('maxWidthPx', '1200');
+			mediaUrl.searchParams.set('maxHeightPx', '900');
+			mediaUrl.searchParams.set('skipHttpRedirect', 'true');
+			mediaUrl.searchParams.set('key', process.env.GOOGLE_PLACES_API_KEY.trim());
+
+			const mediaResponse = await fetch(mediaUrl);
+			const media = await mediaResponse.json().catch(() => ({}));
+			if (!mediaResponse.ok || !media.photoUri) {
+				console.error('Google Place Photo response:', mediaResponse.status, media?.error?.status);
+				return null;
+			}
+
+			return {
+				photoUri: media.photoUri,
+				widthPx: photo.widthPx,
+				heightPx: photo.heightPx,
+				googleMapsUri: photo.googleMapsUri || location.googlePlace.googleMapsUri,
+				authorAttributions: (photo.authorAttributions || []).map((author) => ({
+					displayName: author.displayName || 'Google Maps contributor',
+					uri: author.uri || '',
+					photoUri: author.photoUri || '',
+				})),
+			};
+		}));
+
+		return res.status(200).json({ success: true, data: photos.filter(Boolean) });
+	} catch (error) {
+		return handleError(res, error, 'loading Google Place photos');
 	}
 };

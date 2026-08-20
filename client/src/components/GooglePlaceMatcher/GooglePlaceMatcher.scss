@@ -71,6 +71,40 @@
 	}
 }
 
+.google-place-matcher__photo-button { margin-top: 1rem; }
+
+.google-place-matcher__photos {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+	gap: 1rem;
+	margin-top: 1rem;
+
+	figure {
+		margin: 0;
+		overflow: hidden;
+		border: 1px solid #ddd;
+		border-radius: 6px;
+		background: #f7f7f7;
+	}
+
+	img {
+		display: block;
+		width: 100%;
+		aspect-ratio: 4 / 3;
+		object-fit: cover;
+	}
+
+	figcaption {
+		display: grid;
+		gap: 0.35rem;
+		padding: 0.75rem;
+		font-size: 0.8rem;
+		color: #555;
+
+		a { color: #2b2840; font-weight: 600; }
+	}
+}
+
 @media (max-width: 700px) {
 	.google-place-matcher__header,
 	.google-place-matcher__results article {

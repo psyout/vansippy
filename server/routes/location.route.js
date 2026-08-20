@@ -16,6 +16,7 @@ import {
    updateLocationImage,
 } from "../controllers/locationImage.controller.js";
 import {
+   getGooglePlacePhotos,
    searchGooglePlaces,
    verifyGooglePlace,
 } from "../controllers/locationGooglePlace.controller.js";
@@ -38,6 +39,7 @@ router.patch("/:id/images/:imageId", requireAuth, requireAdmin, updateLocationIm
 router.delete("/:id/images/:imageId", requireAuth, requireAdmin, deleteLocationImage);
 router.post("/:id/google-place/search", requireAuth, requireAdmin, searchGooglePlaces);
 router.put("/:id/google-place", requireAuth, requireAdmin, verifyGooglePlace);
+router.get("/:id/google-place/photos", requireAuth, requireAdmin, getGooglePlacePhotos);
 
 // Router to Update Location
 router.put("/:id", requireAuth, updateLocation);
