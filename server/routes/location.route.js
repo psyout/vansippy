@@ -15,6 +15,10 @@ import {
    saveUploadedImage,
    updateLocationImage,
 } from "../controllers/locationImage.controller.js";
+import {
+   searchGooglePlaces,
+   verifyGooglePlace,
+} from "../controllers/locationGooglePlace.controller.js";
 
 const router = express.Router();
 
@@ -32,6 +36,8 @@ router.post("/:id/images", requireAuth, requireAdmin, saveUploadedImage);
 router.patch("/:id/images/order", requireAuth, requireAdmin, reorderLocationImages);
 router.patch("/:id/images/:imageId", requireAuth, requireAdmin, updateLocationImage);
 router.delete("/:id/images/:imageId", requireAuth, requireAdmin, deleteLocationImage);
+router.post("/:id/google-place/search", requireAuth, requireAdmin, searchGooglePlaces);
+router.put("/:id/google-place", requireAuth, requireAdmin, verifyGooglePlace);
 
 // Router to Update Location
 router.put("/:id", requireAuth, updateLocation);

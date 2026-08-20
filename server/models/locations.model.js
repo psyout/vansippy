@@ -41,6 +41,11 @@ const locationSchema = new mongoose.Schema(
 		images: { type: [businessImageSchema], default: [] },
 		googlePlace: {
 			placeId: { type: String, default: null },
+			name: String,
+			formattedAddress: String,
+			googleMapsUri: String,
+			latitude: Number,
+			longitude: Number,
 			matchStatus: {
 				type: String,
 				enum: ['unmatched', 'suggested', 'verified'],

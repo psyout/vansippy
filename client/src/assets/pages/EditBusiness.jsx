@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import AddLocation from './AddLocation';
 import BusinessImageManager from '../../components/BusinessImageManager/BusinessImageManager';
+import GooglePlaceMatcher from '../../components/GooglePlaceMatcher/GooglePlaceMatcher';
 import './EditBusiness.scss';
 
 function EditBusiness() {
@@ -91,6 +92,10 @@ function EditBusiness() {
 			<BusinessImageManager
 				business={business}
 				onImagesChange={(images) => setBusiness((current) => ({ ...current, images }))}
+			/>
+			<GooglePlaceMatcher
+				business={business}
+				onMatchChange={(googlePlace) => setBusiness((current) => ({ ...current, googlePlace }))}
 			/>
 			<AddLocation
 				editMode={true}
