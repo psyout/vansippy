@@ -2,7 +2,9 @@ import jwt from 'jsonwebtoken';
 
 export const requireAuth = (req, res, next) => {
 	try {
-		const token = req.cookies?.token;
+		const authorization = req.get('authorization') || '';
+		const bearerMatch = authorization.match(/^Bearer\s+(.+)$/i);
+		const token = req.cookies?.token || bearerMatch?.[1]?.trim();
 
 		if (!token) {
 			return res.status(401).json({ success: false, message: 'Unauthorized' });

@@ -9,6 +9,28 @@ const safeStringEqual = (left, right) => {
 	return crypto.timingSafeEqual(leftBuffer, rightBuffer);
 };
 
+const normalizeEnvValue = (value) => {
+	const normalized = value?.trim();
+	if (!normalized) return '';
+
+	const first = normalized[0];
+	const last = normalized[normalized.length - 1];
+	if ((first === '"' && last === '"') || (first === "'" && last === "'")) {
+		return normalized.slice(1, -1).trim();
+	}
+
+	return normalized;
+};
+
+const getAdminPasswordHash = () => {
+	const encodedHash = normalizeEnvValue(process.env.ADMIN_PASSWORD_HASH_B64);
+	if (encodedHash) {
+		return Buffer.from(encodedHash, 'base64').toString('utf8').trim();
+	}
+
+	return normalizeEnvValue(process.env.ADMIN_PASSWORD_HASH);
+};
+
 const getCookieOptions = () => {
 	const isProd = process.env.NODE_ENV === 'production';
 
@@ -29,10 +51,10 @@ export const login = async (req, res) => {
 			return res.status(400).json({ success: false, message: 'Email and password required' });
 		}
 
-		const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
-		const adminHash = process.env.ADMIN_PASSWORD_HASH?.trim();
-		const adminPassword = process.env.ADMIN_PASSWORD?.trim();
-		const secret = process.env.JWT_SECRET;
+		const adminEmail = normalizeEnvValue(process.env.ADMIN_EMAIL).toLowerCase();
+		const adminHash = getAdminPasswordHash();
+		const adminPassword = normalizeEnvValue(process.env.ADMIN_PASSWORD);
+		const secret = normalizeEnvValue(process.env.JWT_SECRET);
 
 		if (!adminEmail || (!adminPassword && !adminHash) || !secret) {
 			return res.status(500).json({ success: false, message: 'Server misconfigured' });
@@ -56,7 +78,7 @@ export const login = async (req, res) => {
 			maxAge: 7 * 24 * 60 * 60 * 1000,
 		});
 
-		return res.status(200).json({ success: true, user: { email: adminEmail, role: 'admin' } });
+		return res.status(200).json({ success: true, token, user: { email: adminEmail, role: 'admin' } });
 	} catch (error) {
 		return res.status(500).json({ success: false, message: 'Server error' });
 	}
