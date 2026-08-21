@@ -99,6 +99,8 @@ MONGO_URI=your_mongodb_connection_string
 CORS_ORIGIN=http://localhost:3000
 ADMIN_EMAIL=admin@example.com
 ADMIN_PASSWORD_HASH=your_bcrypt_password_hash
+# Optional alternative for hosts that alter `$` characters in environment values:
+ADMIN_PASSWORD_HASH_B64=your_base64_encoded_bcrypt_hash
 JWT_SECRET=replace_with_a_long_random_secret
 ```
 
@@ -119,6 +121,13 @@ node -e "import bcrypt from 'bcryptjs'; console.log(await bcrypt.hash('your_admi
 ```
 
 Copy the generated hash into `server/.env` or your production environment variables.
+
+If the hosting platform alters the `$` characters in bcrypt hashes, Base64-encode
+the complete hash and store it in `ADMIN_PASSWORD_HASH_B64` instead. When that
+variable is configured, it takes precedence over `ADMIN_PASSWORD_HASH`.
+
+For Postman, a successful `POST /api/auth/login` response includes a `token`.
+Send it on protected requests with `Authorization: Bearer <token>`.
 
 ## 🚀 Usage
 
@@ -235,6 +244,7 @@ MONGO_URI=your_mongodb_connection_string
 CORS_ORIGIN=https://your-netlify-site.netlify.app
 ADMIN_EMAIL=admin@example.com
 ADMIN_PASSWORD_HASH=your_bcrypt_password_hash
+ADMIN_PASSWORD_HASH_B64=your_base64_encoded_bcrypt_hash
 JWT_SECRET=replace_with_a_long_random_secret
 ```
 
@@ -264,10 +274,10 @@ web-app/
 ## 🔒 Security Notes
 
 - Do not commit `.env` files.
-- Store only bcrypt password hashes in `ADMIN_PASSWORD_HASH`.
+- Prefer a bcrypt password hash in `ADMIN_PASSWORD_HASH`, or its Base64 encoding in `ADMIN_PASSWORD_HASH_B64` when required by the host.
 - Use a long random value for `JWT_SECRET`.
 - Keep `CORS_ORIGIN` restricted to your deployed frontend URL in production.
-- Admin routes are protected by server-side JWT cookie authentication.
+- Admin routes accept the server-side JWT cookie or an `Authorization: Bearer <token>` header.
 
 ## ✍🏼 Author
 
