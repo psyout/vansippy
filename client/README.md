@@ -1,6 +1,4 @@
-
-# Wulen Happy Hour
-
+# Vansippy
 
 ## ⚙️ Installation
 
@@ -23,12 +21,12 @@
 ```bash
   npm start
 ```
+
 To start the application, and it will be available at http://localhost:3000.
 
 ## 🧐 About
+
 A single Page application built with JavaScript (React) that allows users to search and filter nearby deals based on geolocation. Users can click on markers to view details, ratings, and menus for each place. The application lets users search for Happy Hours and discover the city finding new places in the city.
-
-
 
 ## ⛏️ Built Using
 
@@ -42,10 +40,8 @@ A single Page application built with JavaScript (React) that allows users to sea
 
 - [@psyout](https://github.com/psyout) - Idea & Initial Work
 
-
 ## 🎉 Acknowledgements
 
- - Wulen Happy Hour was was born out of a realization - the scarcity of easily accessible information about the myriad of bars and venues offering enticing deals. In bustling cities, countless establishments hide remarkable deals and captivating experiences, waiting to be discovered.
+- Vansippy Happy Hour was was born out of a realization - the scarcity of easily accessible information about the myriad of bars and venues offering enticing deals. In bustling cities, countless establishments hide remarkable deals and captivating experiences, waiting to be discovered.
 
 - This app aims to bridge that gap by leveraging technology to provide a comprehensive platform for users to effortlessly explore nearby bars, uncover their exclusive deals, and enjoy their favorite happy hours in the city.
-

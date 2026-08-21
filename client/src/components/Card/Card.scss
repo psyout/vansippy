@@ -241,6 +241,13 @@
 			color: $color-text;
 		}
 
+		&--empty {
+			font-size: 0.8rem;
+			font-weight: 300;
+			margin-left: 0.5rem;
+			color: var(--card-ink);
+		}
+
 		&--list {
 			display: flex;
 			list-style-type: none;
@@ -258,7 +265,7 @@
 			}
 
 			&-food {
-				padding: 0rem 1rem 0;
+				padding: 0.85rem 1rem 0;
 			}
 		}
 

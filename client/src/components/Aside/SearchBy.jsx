@@ -1,24 +1,8 @@
+import { BUSINESS_CATEGORIES } from '../../constants/businessOptions';
+
 export const filters = [
 	{ value: '', label: 'Categories' },
-	{ value: 'Seafood', label: 'Seafood' },
-	{ value: 'Bars', label: 'Bars' },
-	{ value: 'Canadian', label: 'Canadian' },
-	{ value: 'Karaoke', label: 'Karaoke' },
-	{ value: 'Deli', label: 'Deli' },
-	{ value: 'Cideries', label: 'Cideries' },
-	{ value: 'Restaurant', label: 'Restaurant' },
-	{ value: 'Cocktail', label: 'Cocktail' },
-	{ value: 'Mexican', label: 'Mexican' },
-	{ value: 'Lounges', label: 'Lounges' },
-	{ value: 'Spanish', label: 'Spanish' },
-	{ value: 'Australian', label: 'Australian' },
-	{ value: 'Pub', label: 'Pub' },
-	{ value: 'Gastropub', label: 'Gastropub' },
-	{ value: 'Persian', label: 'Persian' },
-	{ value: 'Dive Bars', label: 'Dive Bars' },
-	{ value: 'Italian', label: 'Italian' },
-	{ value: 'Wine Bar', label: 'Wine Bar' },
-	{ value: 'Bakery', label: 'Bakery' },
+	...BUSINESS_CATEGORIES.map((category) => ({ value: category, label: category })),
 ];
 
 export const hoodFilter = [

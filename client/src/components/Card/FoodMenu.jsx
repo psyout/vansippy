@@ -1,3 +1,5 @@
+import './Card.scss';
+
 const isGroupedMenuItem = (value) => value && typeof value === 'object' && !Array.isArray(value);
 
 const renderMenuPrice = (value) => {
@@ -26,8 +28,8 @@ function FoodMenu({ food, website }) {
 	const foodArray = food ? Object.entries(food) : [];
 
 	return (
-		<>
-			<div className='restaurant-card__menu'>
+		<div className='restaurant-card__menu'>
+			{foodArray.length > 0 ? (
 				<ul className='restaurant-card__menu--list-food'>
 					{foodArray.map(([name, value]) => (
 						<li
@@ -41,8 +43,12 @@ function FoodMenu({ food, website }) {
 						</li>
 					))}
 				</ul>
-			</div>
-		</>
+			) : (
+				<ul className='restaurant-card__menu--list-food'>
+					<li className='restaurant-card__menu--item-food'>No food specials here during happy hour.</li>
+				</ul>
+			)}
+		</div>
 	);
 }
 

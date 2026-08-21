@@ -7,6 +7,7 @@ import Card from '../Card';
 import { filters, hoodFilter } from './SearchBy';
 import formatHours from './FormatHours';
 import isBusinessOpen from '../../utils/isBusinessOpen';
+import { normalizeBusinessCategory } from '../../constants/businessOptions';
 
 const haversineKm = ([lng1, lat1], [lng2, lat2]) => {
 	const toRad = (deg) => (deg * Math.PI) / 180;
@@ -22,7 +23,7 @@ const filterAndSort = (features, search, filterBy, hoodBy, excludeColumns, userC
 
 	const filtered = features
 		.filter(({ properties }) => !search || Object.keys(properties).some((key) => !excludeColumns.includes(key) && properties[key]?.toString().toLowerCase().includes(q)))
-		.filter(({ properties }) => !filterBy || properties.category === filterBy)
+		.filter(({ properties }) => !filterBy || normalizeBusinessCategory(properties.category) === filterBy)
 		.filter(({ properties }) => !hoodBy || properties.neighbourhoods === hoodBy)
 		.filter(({ properties }) => !openNow || isBusinessOpen(properties.hours) === true);
 

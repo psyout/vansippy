@@ -1,3 +1,5 @@
+import './Card.scss';
+
 const isGroupedMenuItem = (value) => value && typeof value === 'object' && !Array.isArray(value);
 
 const renderMenuPrice = (value) => {

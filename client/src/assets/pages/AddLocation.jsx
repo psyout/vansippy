@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './AddLocation.scss';
+import { BUSINESS_CATEGORIES, normalizeBusinessCategory } from '../../constants/businessOptions';
 
 function AddLocation({ editMode = false, mode = 'add', existingBusiness = null, onSuccess }) {
 	const navigate = useNavigate();
@@ -33,7 +34,7 @@ function AddLocation({ editMode = false, mode = 'add', existingBusiness = null, 
 			});
 			setContactNumber(existingBusiness.contact_number || '');
 			setWebsite(existingBusiness.website || '');
-			setCategory(existingBusiness.category || '');
+			setCategory(normalizeBusinessCategory(existingBusiness.category || ''));
 			setNeighbourhood(existingBusiness.neighbourhoods || '');
 
 			// Handle hours - convert from object to array format
@@ -304,10 +305,9 @@ function AddLocation({ editMode = false, mode = 'add', existingBusiness = null, 
 								disabled>
 								Select Category
 							</option>
-							<option value='Restaurant'>Restaurant</option>
-							<option value='Bar'>Bar</option>
-							<option value='Pub'>Pub</option>
-							<option value='Bakery'>Bakery</option>
+							{BUSINESS_CATEGORIES.map((businessCategory) => (
+								<option key={businessCategory} value={businessCategory}>{businessCategory}</option>
+							))}
 						</select>
 					</div>
 					<div className='form-group'>

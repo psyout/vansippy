@@ -206,7 +206,7 @@ function BusinessDashboard() {
 								))}
 							</div>
 						) : (
-							<p className='no-data'>No food menu items</p>
+							<p className='no-data'>No food specials here during happy hour.</p>
 						)}
 					</div>
 				</div>
